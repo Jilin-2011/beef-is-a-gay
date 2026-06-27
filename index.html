@@ -5,12 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>红桃8 · GAY</title>
     <style>
+        /* ===== 全局重置 ===== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
+        /* ===== 主体：背景 + 水印 ===== */
         body {
             min-height: 100vh;
             display: flex;
@@ -23,6 +25,7 @@
             overflow: hidden;
         }
 
+        /* ===== 背景水印 “GAY” ===== */
         .watermark {
             position: fixed;
             top: 0;
@@ -52,6 +55,7 @@
             text-shadow: 2px 2px 6px rgba(0,0,0,0.4);
         }
 
+        /* ===== 扑克牌 ===== */
         .card {
             position: relative;
             z-index: 10;
@@ -66,7 +70,7 @@
             align-items: center;
         }
 
-        /* 红桃容器 */
+        /* ===== 红桃8 的 8 颗心（2-1-2-1-2） ===== */
         .hearts-container {
             position: absolute;
             top: 0;
@@ -75,16 +79,17 @@
             height: 100%;
             display: flex;
             flex-direction: column;
-            justify-content: space-evenly; /* 均匀分布，避免间距过大 */
-            padding: 8% 10%;  /* 增加左右内边距，避免碰到角标 */
+            justify-content: space-around;
+            padding: 6% 12%;          /* 左右内边距增大，避免心碰到角标 */
             pointer-events: none;
         }
 
         .heart-row {
             display: flex;
-            justify-content: space-between;
+            justify-content: space-evenly;  /* 均匀分布，两心不靠边 */
             width: 100%;
         }
+        /* 单颗心居中 */
         .heart-row.center {
             justify-content: center;
         }
@@ -97,13 +102,12 @@
             user-select: none;
         }
 
-        /* 底部两行（第4、5行）颠倒 */
-        .heart-row.reverse span {
+        /* 第4、5行（索引3和4）的心形颠倒 */
+        .heart-row.flip span {
             transform: rotate(180deg);
-            display: inline-block; /* 确保旋转生效 */
         }
 
-        /* 角标 - 放大到和心形一样大 */
+        /* ===== 左上角和右下角的 “8♥” 放大 ===== */
         .corner {
             position: absolute;
             display: flex;
@@ -116,23 +120,24 @@
             user-select: none;
         }
         .corner .number {
-            font-size: clamp(5rem, 20vmin, 14rem); /* 与心形同尺寸 */
+            font-size: clamp(4.5rem, 14vmin, 10rem);  /* 大幅增大 */
         }
         .corner .suit {
-            font-size: clamp(5rem, 20vmin, 14rem); /* 同样大 */
-            margin-top: -10px; /* 微调 */
+            font-size: clamp(3.5rem, 10vmin, 7.5rem); /* 与数字匹配 */
+            margin-top: -10px;
         }
 
         .corner-tl {
-            top: 20px;
-            left: 24px;
+            top: 16px;
+            left: 20px;
         }
         .corner-br {
-            bottom: 20px;
-            right: 24px;
+            bottom: 16px;
+            right: 20px;
             transform: rotate(180deg);
         }
 
+        /* ===== 中间内容面板 ===== */
         .content {
             position: relative;
             z-index: 20;
@@ -187,6 +192,7 @@
             transform: none;
         }
 
+        /* ===== 手机窄屏适配 ===== */
         @media (max-width: 480px) {
             .content {
                 padding: 20px 20px;
@@ -194,12 +200,12 @@
                 background: rgba(255, 255, 255, 0.92);
             }
             .corner-tl {
-                top: 12px;
-                left: 14px;
+                top: 10px;
+                left: 12px;
             }
             .corner-br {
-                bottom: 12px;
-                right: 14px;
+                bottom: 10px;
+                right: 12px;
             }
             .content h1 {
                 white-space: normal;
@@ -211,44 +217,50 @@
                 transform: rotate(-6deg) scale(1.1);
             }
             .hearts-container {
-                padding: 6% 8%;
+                padding: 4% 8%;
             }
-            .heart-row span,
-            .corner .number,
-            .corner .suit {
+            .heart-row span {
                 font-size: clamp(3.5rem, 14vmin, 8rem);
+            }
+            .corner .number {
+                font-size: clamp(2.8rem, 10vmin, 6rem);
+            }
+            .corner .suit {
+                font-size: clamp(2.2rem, 7vmin, 4.5rem);
             }
         }
     </style>
 </head>
 <body>
 
+    <!-- ===== 水印 ===== -->
     <div class="watermark" id="watermarkContainer"></div>
 
+    <!-- ===== 扑克牌 ===== -->
     <div class="card">
 
-        <!-- 8颗心 2-1-2-1-2 -->
+        <!-- 8颗心：2-1-2-1-2，其中第4、5行颠倒 -->
         <div class="hearts-container">
-            <!-- 第1行：2颗 -->
+            <!-- 第一行：2颗 -->
             <div class="heart-row">
                 <span>♥</span>
                 <span>♥</span>
             </div>
-            <!-- 第2行：1颗 -->
+            <!-- 第二行：1颗 -->
             <div class="heart-row center">
                 <span>♥</span>
             </div>
-            <!-- 第3行：2颗 -->
+            <!-- 第三行：2颗 -->
             <div class="heart-row">
                 <span>♥</span>
                 <span>♥</span>
             </div>
-            <!-- 第4行：1颗（颠倒） -->
-            <div class="heart-row center reverse">
+            <!-- 第四行：1颗（颠倒） -->
+            <div class="heart-row center flip">
                 <span>♥</span>
             </div>
-            <!-- 第5行：2颗（颠倒） -->
-            <div class="heart-row reverse">
+            <!-- 第五行：2颗（颠倒） -->
+            <div class="heart-row flip">
                 <span>♥</span>
                 <span>♥</span>
             </div>
@@ -264,6 +276,7 @@
             <span class="suit">♥</span>
         </div>
 
+        <!-- 中间内容 -->
         <div class="content">
             <h1>
                 <span class="highlight">Beef</span> is a gay
@@ -274,7 +287,7 @@
     </div>
 
     <script>
-        // 水印
+        // ===== 生成水印 “GAY” =====
         (function() {
             const container = document.getElementById('watermarkContainer');
             const w = window.innerWidth;
@@ -287,7 +300,7 @@
             }
         })();
 
-        // Start按钮
+        // ===== Start 按钮 =====
         const startBtn = document.getElementById('startBtn');
         startBtn.addEventListener('click', function() {
             this.textContent = '🚀 加载中';
