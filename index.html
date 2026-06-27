@@ -3,29 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BEEF & JOSH</title>
+    <title>红桃8 · GAY</title>
     <style>
-        /* ===== 全局重置 ===== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        /* ===== 主体：背景 + 水印 ===== */
         body {
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            background: #1a472a; /* 墨绿色桌布 */
+            background: #1a472a;
             font-family: 'Arial', 'Helvetica', sans-serif;
             padding: 20px;
             position: relative;
             overflow: hidden;
         }
 
-        /* ===== 背景水印 “GAY” ===== */
         .watermark {
             position: fixed;
             top: 0;
@@ -55,7 +52,6 @@
             text-shadow: 2px 2px 6px rgba(0,0,0,0.4);
         }
 
-        /* ===== 扑克牌 ===== */
         .card {
             position: relative;
             z-index: 10;
@@ -70,7 +66,7 @@
             align-items: center;
         }
 
-        /* ===== 红桃8 的 8 颗心（2-1-2-1-2 排列） ===== */
+        /* 红桃容器 */
         .hearts-container {
             position: absolute;
             top: 0;
@@ -79,34 +75,35 @@
             height: 100%;
             display: flex;
             flex-direction: column;
-            justify-content: space-around; /* 上下均匀分布 */
-            padding: 8% 6%;              /* 减小内边距，让心更大 */
+            justify-content: space-evenly; /* 均匀分布，避免间距过大 */
+            padding: 8% 10%;  /* 增加左右内边距，避免碰到角标 */
             pointer-events: none;
         }
 
-        /* 每一行：flex 水平分布 */
         .heart-row {
             display: flex;
-            justify-content: space-between; /* 两颗时左右贴边 */
+            justify-content: space-between;
             width: 100%;
         }
-        /* 当该行只有一颗心时，让它居中 */
         .heart-row.center {
             justify-content: center;
         }
 
-        /* 每颗心公用样式 */
         .heart-row span {
             color: #d32f2f;
-            font-size: clamp(5rem, 20vmin, 14rem);  /* 超大心形 */
+            font-size: clamp(5rem, 20vmin, 14rem);
             line-height: 1;
             text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1);
             user-select: none;
         }
 
-        /* 单颗心时不需要额外处理，居中即可 */
+        /* 底部两行（第4、5行）颠倒 */
+        .heart-row.reverse span {
+            transform: rotate(180deg);
+            display: inline-block; /* 确保旋转生效 */
+        }
 
-        /* ===== 左上角和右下角的 “8♥” ===== */
+        /* 角标 - 放大到和心形一样大 */
         .corner {
             position: absolute;
             display: flex;
@@ -119,11 +116,11 @@
             user-select: none;
         }
         .corner .number {
-            font-size: clamp(3.2rem, 8vmin, 6.5rem);
+            font-size: clamp(5rem, 20vmin, 14rem); /* 与心形同尺寸 */
         }
         .corner .suit {
-            font-size: clamp(2.4rem, 6vmin, 4.8rem);
-            margin-top: -8px;
+            font-size: clamp(5rem, 20vmin, 14rem); /* 同样大 */
+            margin-top: -10px; /* 微调 */
         }
 
         .corner-tl {
@@ -136,7 +133,6 @@
             transform: rotate(180deg);
         }
 
-        /* ===== 中间内容面板 ===== */
         .content {
             position: relative;
             z-index: 20;
@@ -191,7 +187,6 @@
             transform: none;
         }
 
-        /* ===== 手机窄屏适配 ===== */
         @media (max-width: 480px) {
             .content {
                 padding: 20px 20px;
@@ -216,9 +211,11 @@
                 transform: rotate(-6deg) scale(1.1);
             }
             .hearts-container {
-                padding: 6% 4%;
+                padding: 6% 8%;
             }
-            .heart-row span {
+            .heart-row span,
+            .corner .number,
+            .corner .suit {
                 font-size: clamp(3.5rem, 14vmin, 8rem);
             }
         }
@@ -226,34 +223,32 @@
 </head>
 <body>
 
-    <!-- ===== 水印 ===== -->
     <div class="watermark" id="watermarkContainer"></div>
 
-    <!-- ===== 扑克牌 ===== -->
     <div class="card">
 
-        <!-- 8颗心：2-1-2-1-2 -->
+        <!-- 8颗心 2-1-2-1-2 -->
         <div class="hearts-container">
-            <!-- 第一行：2颗 -->
+            <!-- 第1行：2颗 -->
             <div class="heart-row">
                 <span>♥</span>
                 <span>♥</span>
             </div>
-            <!-- 第二行：1颗（居中） -->
+            <!-- 第2行：1颗 -->
             <div class="heart-row center">
                 <span>♥</span>
             </div>
-            <!-- 第三行：2颗 -->
+            <!-- 第3行：2颗 -->
             <div class="heart-row">
                 <span>♥</span>
                 <span>♥</span>
             </div>
-            <!-- 第四行：1颗（居中） -->
-            <div class="heart-row center">
+            <!-- 第4行：1颗（颠倒） -->
+            <div class="heart-row center reverse">
                 <span>♥</span>
             </div>
-            <!-- 第五行：2颗 -->
-            <div class="heart-row">
+            <!-- 第5行：2颗（颠倒） -->
+            <div class="heart-row reverse">
                 <span>♥</span>
                 <span>♥</span>
             </div>
@@ -269,7 +264,6 @@
             <span class="suit">♥</span>
         </div>
 
-        <!-- 中间内容 -->
         <div class="content">
             <h1>
                 <span class="highlight">Beef</span> is a gay
@@ -280,7 +274,7 @@
     </div>
 
     <script>
-        // ===== 生成水印 “GAY” =====
+        // 水印
         (function() {
             const container = document.getElementById('watermarkContainer');
             const w = window.innerWidth;
@@ -293,7 +287,7 @@
             }
         })();
 
-        // ===== Start 按钮 =====
+        // Start按钮
         const startBtn = document.getElementById('startBtn');
         startBtn.addEventListener('click', function() {
             this.textContent = '🚀 加载中';
