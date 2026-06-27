@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>红桃8 · GAY 背景</title>
+    <title>红桃8 · GAY</title>
     <style>
         /* ===== 全局重置 ===== */
         * {
@@ -12,56 +12,53 @@
             box-sizing: border-box;
         }
 
-        /* ===== 网页主体：撑满全屏，并作为背景水印的容器 ===== */
+        /* ===== 主体：背景 + 水印 ===== */
         body {
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            background: #1a472a; /* 墨绿色桌布底色（扑克牌外可见） */
+            background: #1a472a; /* 墨绿色桌布 */
             font-family: 'Arial', 'Helvetica', sans-serif;
             padding: 20px;
-            /* 保证水印铺满整个视口 */
             position: relative;
             overflow: hidden;
         }
 
-        /* ===== 背景水印：“GAY” 铺满平面 ===== */
+        /* ===== 背景水印 “GAY” ===== */
         .watermark {
-            position: fixed;          /* 固定在视口，不随滚动 */
+            position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            z-index: 0;              /* 放在最底层 */
+            z-index: 0;
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
             align-items: center;
-            align-content: center;    /* 多行居中 */
-            gap: 20px 40px;          /* 文字间距，可调 */
-            pointer-events: none;     /* 让鼠标穿透，不影响点击按钮 */
-            opacity: 0.20;           /* 透明度，隐约可见 */
-            color: #d4af37;          /* 金色，与绿桌布搭配 */
-            font-size: clamp(2rem, 8vmin, 6rem);
+            align-content: center;
+            gap: 30px 50px;
+            pointer-events: none;
+            opacity: 0.20;
+            color: #d4af37;
+            font-size: clamp(2.5rem, 10vmin, 8rem);
             font-weight: 900;
-            letter-spacing: 8px;
+            letter-spacing: 10px;
             text-transform: uppercase;
             user-select: none;
-            /* 使用旋转增加设计感（可选） */
-            transform: rotate(-8deg) scale(1.2);
+            transform: rotate(-10deg) scale(1.2);
         }
-        /* 每个“GAY”文字独立块（用于布局） */
         .watermark span {
             display: inline-block;
             white-space: nowrap;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            text-shadow: 2px 2px 6px rgba(0,0,0,0.4);
         }
 
-        /* ===== 扑克牌卡片 ===== */
+        /* ===== 扑克牌 ===== */
         .card {
             position: relative;
-            z-index: 10;              /* 浮在水印之上 */
+            z-index: 10;
             width: 100%;
             max-width: 700px;
             aspect-ratio: 2.5 / 3.5;
@@ -71,69 +68,45 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            /* 内部的绝对定位元素相对此容器定位 */
         }
 
-        /* ===== 红桃8 的 8 颗心 ===== */
-        .hearts-grid {
+        /* ===== 红桃8 的 8 颗心（2-1-2-1-2 排列） ===== */
+        .hearts-container {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            display: grid;
-            /* 3行，每行4列（但第一和第三行只占中间两列） */
-            grid-template-columns: 1fr 1fr 1fr 1fr;
-            grid-template-rows: 1fr 1fr 1fr;
-            justify-items: center;
-            align-items: center;
-            padding: 14% 8%;          /* 上下左右留白，让心形不贴边 */
-            pointer-events: none;     /* 让鼠标穿透 */
-            gap: 2%;                  /* 行/列间距微调 */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around; /* 上下均匀分布 */
+            padding: 8% 6%;              /* 减小内边距，让心更大 */
+            pointer-events: none;
         }
 
-        /* 每颗心共用样式 */
-        .hearts-grid span {
+        /* 每一行：flex 水平分布 */
+        .heart-row {
+            display: flex;
+            justify-content: space-between; /* 两颗时左右贴边 */
+            width: 100%;
+        }
+        /* 当该行只有一颗心时，让它居中 */
+        .heart-row.center {
+            justify-content: center;
+        }
+
+        /* 每颗心公用样式 */
+        .heart-row span {
             color: #d32f2f;
-            font-size: clamp(3rem, 10vmin, 6.5rem);
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.08);
+            font-size: clamp(5rem, 20vmin, 14rem);  /* 超大心形 */
             line-height: 1;
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1);
             user-select: none;
         }
 
-        /* 第一行：只占第2和第3列（即中间两列） */
-        .hearts-grid .row1 {
-            grid-row: 1;
-            grid-column: 2 / 4;       /* 从第2列开始，跨2列，居中 */
-            display: flex;
-            justify-content: space-evenly; /* 两颗心分散 */
-            width: 100%;
-        }
-        /* 第二行：占满4列，放置4颗心 */
-        .hearts-grid .row2 {
-            grid-row: 2;
-            grid-column: 1 / 5;
-            display: flex;
-            justify-content: space-evenly;
-            width: 100%;
-        }
-        /* 第三行：同第一行，只占中间两列 */
-        .hearts-grid .row3 {
-            grid-row: 3;
-            grid-column: 2 / 4;
-            display: flex;
-            justify-content: space-evenly;
-            width: 100%;
-        }
+        /* 单颗心时不需要额外处理，居中即可 */
 
-        /* 每一行内的每颗心 */
-        .hearts-grid .row1 span,
-        .hearts-grid .row2 span,
-        .hearts-grid .row3 span {
-            font-size: clamp(3rem, 10vmin, 6.5rem);
-        }
-
-        /* ===== 左上角和右下角的“8♥”标记 ===== */
+        /* ===== 左上角和右下角的 “8♥” ===== */
         .corner {
             position: absolute;
             display: flex;
@@ -146,34 +119,34 @@
             user-select: none;
         }
         .corner .number {
-            font-size: clamp(2.8rem, 7vmin, 5.5rem);
+            font-size: clamp(3.2rem, 8vmin, 6.5rem);
         }
         .corner .suit {
-            font-size: clamp(2.0rem, 5vmin, 4.0rem);
-            margin-top: -6px;
+            font-size: clamp(2.4rem, 6vmin, 4.8rem);
+            margin-top: -8px;
         }
 
         .corner-tl {
-            top: 18px;
-            left: 22px;
+            top: 20px;
+            left: 24px;
         }
         .corner-br {
-            bottom: 18px;
-            right: 22px;
+            bottom: 20px;
+            right: 24px;
             transform: rotate(180deg);
         }
 
-        /* ===== 中间内容 ===== */
+        /* ===== 中间内容面板 ===== */
         .content {
             position: relative;
-            z-index: 20;              /* 在最上层 */
+            z-index: 20;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 32px;
-            background: rgba(255, 255, 255, 0.85);
+            gap: 30px;
+            background: rgba(255, 255, 255, 0.88);
             backdrop-filter: blur(8px);
-            padding: 34px 48px;
+            padding: 32px 44px;
             border-radius: 20px;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
             border: 2px solid rgba(255, 255, 255, 0.5);
@@ -181,7 +154,7 @@
         }
 
         .content h1 {
-            font-size: clamp(2rem, 6vmin, 4.2rem);
+            font-size: clamp(2.2rem, 6.5vmin, 4.6rem);
             color: #1a1a1a;
             font-weight: 900;
             letter-spacing: 2px;
@@ -193,8 +166,8 @@
         }
 
         .btn-start {
-            padding: 16px 56px;
-            font-size: clamp(1.3rem, 3.2vmin, 2.2rem);
+            padding: 16px 60px;
+            font-size: clamp(1.4rem, 3.5vmin, 2.4rem);
             font-weight: bold;
             color: white;
             background: linear-gradient(135deg, #d32f2f, #b71c1c);
@@ -218,11 +191,11 @@
             transform: none;
         }
 
-        /* ===== 手机适配 ===== */
+        /* ===== 手机窄屏适配 ===== */
         @media (max-width: 480px) {
             .content {
-                padding: 22px 24px;
-                gap: 22px;
+                padding: 20px 20px;
+                gap: 20px;
                 background: rgba(255, 255, 255, 0.92);
             }
             .corner-tl {
@@ -238,59 +211,59 @@
                 text-align: center;
             }
             .watermark {
-                gap: 12px 20px;
-                font-size: clamp(1.2rem, 5vmin, 3rem);
+                gap: 15px 25px;
+                font-size: clamp(1.5rem, 6vmin, 3.5rem);
                 transform: rotate(-6deg) scale(1.1);
             }
-            .hearts-grid {
-                padding: 10% 4%;
-                gap: 1%;
+            .hearts-container {
+                padding: 6% 4%;
             }
-            .hearts-grid .row1 span,
-            .hearts-grid .row2 span,
-            .hearts-grid .row3 span {
-                font-size: clamp(2rem, 8vmin, 4rem);
+            .heart-row span {
+                font-size: clamp(3.5rem, 14vmin, 8rem);
             }
         }
     </style>
 </head>
 <body>
 
-    <!-- ===== 背景水印：铺满的“GAY” ===== -->
-    <div class="watermark" id="watermarkContainer">
-        <!-- 由 JavaScript 生成大量“GAY” -->
-    </div>
+    <!-- ===== 水印 ===== -->
+    <div class="watermark" id="watermarkContainer"></div>
 
     <!-- ===== 扑克牌 ===== -->
     <div class="card">
 
-        <!-- 红桃8 网格 -->
-        <div class="hearts-grid">
-            <!-- 第一行：2颗心（第2、3列） -->
-            <div class="row1">
+        <!-- 8颗心：2-1-2-1-2 -->
+        <div class="hearts-container">
+            <!-- 第一行：2颗 -->
+            <div class="heart-row">
                 <span>♥</span>
                 <span>♥</span>
             </div>
-            <!-- 第二行：4颗心（占满4列） -->
-            <div class="row2">
+            <!-- 第二行：1颗（居中） -->
+            <div class="heart-row center">
                 <span>♥</span>
-                <span>♥</span>
+            </div>
+            <!-- 第三行：2颗 -->
+            <div class="heart-row">
                 <span>♥</span>
                 <span>♥</span>
             </div>
-            <!-- 第三行：2颗心（第2、3列） -->
-            <div class="row3">
+            <!-- 第四行：1颗（居中） -->
+            <div class="heart-row center">
+                <span>♥</span>
+            </div>
+            <!-- 第五行：2颗 -->
+            <div class="heart-row">
                 <span>♥</span>
                 <span>♥</span>
             </div>
         </div>
 
-        <!-- 左上角标记 -->
+        <!-- 角标 -->
         <div class="corner corner-tl">
             <span class="number">8</span>
             <span class="suit">♥</span>
         </div>
-        <!-- 右下角标记 -->
         <div class="corner corner-br">
             <span class="number">8</span>
             <span class="suit">♥</span>
@@ -307,14 +280,12 @@
     </div>
 
     <script>
-        // ===== 1. 生成背景水印 “GAY” =====
-        (function createWatermark() {
+        // ===== 生成水印 “GAY” =====
+        (function() {
             const container = document.getElementById('watermarkContainer');
-            // 根据视口面积估算需要多少个“GAY”，确保铺满
-            const width = window.innerWidth;
-            const height = window.innerHeight;
-            // 每个“GAY”大约占宽120px，高80px（取决于字体大小），我们生成足够数量
-            const count = Math.ceil((width * height) / (120 * 80)) * 2; // 加一倍确保覆盖
+            const w = window.innerWidth;
+            const h = window.innerHeight;
+            const count = Math.ceil((w * h) / (150 * 100)) * 2;
             for (let i = 0; i < count; i++) {
                 const span = document.createElement('span');
                 span.textContent = 'GAY';
@@ -322,7 +293,7 @@
             }
         })();
 
-        // ===== 2. Start 按钮交互 =====
+        // ===== Start 按钮 =====
         const startBtn = document.getElementById('startBtn');
         startBtn.addEventListener('click', function() {
             this.textContent = '🚀 加载中';
@@ -333,10 +304,6 @@
                 alert('🎮 游戏启动入口已就绪！\n接下来把游戏逻辑写在这里即可。');
             }, 1500);
         });
-
-        // ===== 3. 窗口尺寸变化时重新生成水印（可选） =====
-        // 为了简单，不监听resize，否则会频繁刷新，影响性能。
-        // 如果觉得不够密，可以手动调整上面 count 乘数。
     </script>
 </body>
 </html>
