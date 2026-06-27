@@ -70,7 +70,7 @@
             align-items: center;
         }
 
-        /* ===== 红桃8 的 8 颗心（2-1-2-1-2），整体内缩 ===== */
+        /* ===== 红桃8 的 8 颗心（2-1-2-1-2），上下紧凑 ===== */
         .hearts-container {
             position: absolute;
             top: 0;
@@ -79,21 +79,21 @@
             height: 100%;
             display: flex;
             flex-direction: column;
-            justify-content: space-around;
-            padding: 6% 16%;          /* 左右内边距加大至16%，整体内缩 */
+            justify-content: space-evenly;  /* 改为 space-evenly，均匀分布 */
+            padding: 2% 16%;               /* 上下内边距从6%减小到2%，更紧凑 */
             pointer-events: none;
         }
 
         .heart-row {
             display: flex;
-            justify-content: center;   /* 居中排列 */
+            justify-content: center;
             width: 100%;
         }
-        /* 两心行：心形之间用间距隔开，两端留白 */
+        /* 两心行 */
         .heart-row.two {
-            gap: 20%;                /* 两颗心之间的间隔，相对父容器宽度 */
+            gap: 20%;
         }
-        /* 单心行居中 */
+        /* 单心行 */
         .heart-row.center {
             justify-content: center;
         }
@@ -106,12 +106,12 @@
             user-select: none;
         }
 
-        /* 第4、5行（索引3和4）的心形颠倒 */
+        /* 第4、5行颠倒 */
         .heart-row.flip span {
             transform: rotate(180deg);
         }
 
-        /* ===== 左上角和右下角的 “8♥” 适当缩小 ===== */
+        /* ===== 左上角和右下角的 “8♥” ===== */
         .corner {
             position: absolute;
             display: flex;
@@ -124,10 +124,10 @@
             user-select: none;
         }
         .corner .number {
-            font-size: clamp(3.2rem, 10vmin, 7rem);   /* 减小 */
+            font-size: clamp(3.2rem, 10vmin, 7rem);
         }
         .corner .suit {
-            font-size: clamp(2.4rem, 7vmin, 5rem);    /* 减小 */
+            font-size: clamp(2.4rem, 7vmin, 5rem);
             margin-top: -8px;
         }
 
@@ -221,7 +221,7 @@
                 transform: rotate(-6deg) scale(1.1);
             }
             .hearts-container {
-                padding: 4% 12%;      /* 手机上适当减小内边距，保持比例 */
+                padding: 2% 12%;        /* 手机上保持紧凑 */
             }
             .heart-row span {
                 font-size: clamp(3.5rem, 14vmin, 8rem);
@@ -243,9 +243,9 @@
     <!-- ===== 扑克牌 ===== -->
     <div class="card">
 
-        <!-- 8颗心：2-1-2-1-2，其中第4、5行颠倒 -->
+        <!-- 8颗心：2-1-2-1-2，第4、5行颠倒 -->
         <div class="hearts-container">
-            <!-- 第一行：2颗（居中，有间隔） -->
+            <!-- 第一行：2颗 -->
             <div class="heart-row two">
                 <span>♥</span>
                 <span>♥</span>
