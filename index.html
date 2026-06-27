@@ -5,14 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>红桃8 · GAY</title>
     <style>
-        /* ===== 全局重置 ===== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        /* ===== 主体：背景 + 水印 ===== */
         body {
             min-height: 100vh;
             display: flex;
@@ -25,7 +23,7 @@
             overflow: hidden;
         }
 
-        /* ===== 背景水印 “GAY” ===== */
+        /* ===== 水印 ===== */
         .watermark {
             position: fixed;
             top: 0;
@@ -55,22 +53,23 @@
             text-shadow: 2px 2px 6px rgba(0,0,0,0.4);
         }
 
-        /* ===== 扑克牌 ===== */
+        /* ===== 扑克牌（加高，防止裁剪） ===== */
         .card {
             position: relative;
             z-index: 10;
             width: 100%;
             max-width: 700px;
-            aspect-ratio: 2.5 / 3.5;
+            aspect-ratio: 2.5 / 3.8;        /* 增高，确保内容完整 */
             background: #ffffff;
             border-radius: 28px;
             box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7), inset 0 0 0 2px #f0f0f0;
             display: flex;
             justify-content: center;
             align-items: center;
+            overflow: visible;               /* 防止溢出裁剪 */
         }
 
-        /* ===== 红桃8 的 8 颗心（2-1-2-1-2），上下紧凑 ===== */
+        /* ===== 红桃8 心形容器，上下紧凑 ===== */
         .hearts-container {
             position: absolute;
             top: 0;
@@ -79,8 +78,8 @@
             height: 100%;
             display: flex;
             flex-direction: column;
-            justify-content: space-evenly;  /* 改为 space-evenly，均匀分布 */
-            padding: 2% 16%;               /* 上下内边距从6%减小到2%，更紧凑 */
+            justify-content: space-between;  /* 首行贴顶，末行贴底，中间均匀 */
+            padding: 0% 16%;                 /* 上下无内边距，左右保留 */
             pointer-events: none;
         }
 
@@ -89,11 +88,9 @@
             justify-content: center;
             width: 100%;
         }
-        /* 两心行 */
         .heart-row.two {
             gap: 20%;
         }
-        /* 单心行 */
         .heart-row.center {
             justify-content: center;
         }
@@ -111,7 +108,7 @@
             transform: rotate(180deg);
         }
 
-        /* ===== 左上角和右下角的 “8♥” ===== */
+        /* ===== 角落“8♥”放大且位置微调 ===== */
         .corner {
             position: absolute;
             display: flex;
@@ -132,16 +129,16 @@
         }
 
         .corner-tl {
-            top: 18px;
-            left: 20px;
+            top: 14px;
+            left: 18px;
         }
         .corner-br {
-            bottom: 18px;
-            right: 20px;
+            bottom: 14px;
+            right: 18px;
             transform: rotate(180deg);
         }
 
-        /* ===== 中间内容面板 ===== */
+        /* ===== 中间内容 ===== */
         .content {
             position: relative;
             z-index: 20;
@@ -196,7 +193,7 @@
             transform: none;
         }
 
-        /* ===== 手机窄屏适配 ===== */
+        /* ===== 手机适配 ===== */
         @media (max-width: 480px) {
             .content {
                 padding: 20px 20px;
@@ -204,12 +201,12 @@
                 background: rgba(255, 255, 255, 0.92);
             }
             .corner-tl {
-                top: 12px;
-                left: 14px;
+                top: 10px;
+                left: 12px;
             }
             .corner-br {
-                bottom: 12px;
-                right: 14px;
+                bottom: 10px;
+                right: 12px;
             }
             .content h1 {
                 white-space: normal;
@@ -221,7 +218,7 @@
                 transform: rotate(-6deg) scale(1.1);
             }
             .hearts-container {
-                padding: 2% 12%;        /* 手机上保持紧凑 */
+                padding: 0% 12%;
             }
             .heart-row span {
                 font-size: clamp(3.5rem, 14vmin, 8rem);
@@ -243,7 +240,6 @@
     <!-- ===== 扑克牌 ===== -->
     <div class="card">
 
-        <!-- 8颗心：2-1-2-1-2，第4、5行颠倒 -->
         <div class="hearts-container">
             <!-- 第一行：2颗 -->
             <div class="heart-row two">
