@@ -70,7 +70,7 @@
             align-items: center;
         }
 
-        /* ===== 红桃8 的 8 颗心（2-1-2-1-2） ===== */
+        /* ===== 红桃8 的 8 颗心（2-1-2-1-2），整体内缩 ===== */
         .hearts-container {
             position: absolute;
             top: 0;
@@ -80,16 +80,20 @@
             display: flex;
             flex-direction: column;
             justify-content: space-around;
-            padding: 6% 12%;          /* 左右内边距增大，避免心碰到角标 */
+            padding: 6% 16%;          /* 左右内边距加大至16%，整体内缩 */
             pointer-events: none;
         }
 
         .heart-row {
             display: flex;
-            justify-content: space-evenly;  /* 均匀分布，两心不靠边 */
+            justify-content: center;   /* 居中排列 */
             width: 100%;
         }
-        /* 单颗心居中 */
+        /* 两心行：心形之间用间距隔开，两端留白 */
+        .heart-row.two {
+            gap: 20%;                /* 两颗心之间的间隔，相对父容器宽度 */
+        }
+        /* 单心行居中 */
         .heart-row.center {
             justify-content: center;
         }
@@ -107,7 +111,7 @@
             transform: rotate(180deg);
         }
 
-        /* ===== 左上角和右下角的 “8♥” 放大 ===== */
+        /* ===== 左上角和右下角的 “8♥” 适当缩小 ===== */
         .corner {
             position: absolute;
             display: flex;
@@ -120,19 +124,19 @@
             user-select: none;
         }
         .corner .number {
-            font-size: clamp(4.5rem, 14vmin, 10rem);  /* 大幅增大 */
+            font-size: clamp(3.2rem, 10vmin, 7rem);   /* 减小 */
         }
         .corner .suit {
-            font-size: clamp(3.5rem, 10vmin, 7.5rem); /* 与数字匹配 */
-            margin-top: -10px;
+            font-size: clamp(2.4rem, 7vmin, 5rem);    /* 减小 */
+            margin-top: -8px;
         }
 
         .corner-tl {
-            top: 16px;
+            top: 18px;
             left: 20px;
         }
         .corner-br {
-            bottom: 16px;
+            bottom: 18px;
             right: 20px;
             transform: rotate(180deg);
         }
@@ -200,12 +204,12 @@
                 background: rgba(255, 255, 255, 0.92);
             }
             .corner-tl {
-                top: 10px;
-                left: 12px;
+                top: 12px;
+                left: 14px;
             }
             .corner-br {
-                bottom: 10px;
-                right: 12px;
+                bottom: 12px;
+                right: 14px;
             }
             .content h1 {
                 white-space: normal;
@@ -217,16 +221,16 @@
                 transform: rotate(-6deg) scale(1.1);
             }
             .hearts-container {
-                padding: 4% 8%;
+                padding: 4% 12%;      /* 手机上适当减小内边距，保持比例 */
             }
             .heart-row span {
                 font-size: clamp(3.5rem, 14vmin, 8rem);
             }
             .corner .number {
-                font-size: clamp(2.8rem, 10vmin, 6rem);
+                font-size: clamp(2.4rem, 8vmin, 4.5rem);
             }
             .corner .suit {
-                font-size: clamp(2.2rem, 7vmin, 4.5rem);
+                font-size: clamp(1.8rem, 6vmin, 3.5rem);
             }
         }
     </style>
@@ -241,8 +245,8 @@
 
         <!-- 8颗心：2-1-2-1-2，其中第4、5行颠倒 -->
         <div class="hearts-container">
-            <!-- 第一行：2颗 -->
-            <div class="heart-row">
+            <!-- 第一行：2颗（居中，有间隔） -->
+            <div class="heart-row two">
                 <span>♥</span>
                 <span>♥</span>
             </div>
@@ -251,7 +255,7 @@
                 <span>♥</span>
             </div>
             <!-- 第三行：2颗 -->
-            <div class="heart-row">
+            <div class="heart-row two">
                 <span>♥</span>
                 <span>♥</span>
             </div>
@@ -260,7 +264,7 @@
                 <span>♥</span>
             </div>
             <!-- 第五行：2颗（颠倒） -->
-            <div class="heart-row flip">
+            <div class="heart-row two flip">
                 <span>♥</span>
                 <span>♥</span>
             </div>
