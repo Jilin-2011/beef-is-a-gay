@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>红桃8 · 启动页</title>
+    <style>
+        /* 全局重置，让页面占满屏幕 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #1a472a; /* 墨绿色桌布背景，衬托扑克牌 */
+            font-family: 'Arial', 'Helvetica', sans-serif;
+            padding: 20px;
+        }
+
+        /* ----- 扑克牌主容器（背景就是这张牌） ----- */
+        .card {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            aspect-ratio: 2.5 / 3.5; /* 标准扑克牌比例 */
+            background: #ffffff;
+            border-radius: 28px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), inset 0 0 0 2px #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* 让内部的绝对定位元素相对于这张牌定位 */
+        }
+
+        /* ----- 红桃8图案：8颗心排成 2列 × 4行 ----- */
+        .hearts-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;   /* 两列 */
+            grid-template-rows: repeat(4, 1fr); /* 四行 */
+            justify-items: center;
+            align-items: center;
+            padding: 18% 22%; /* 让心形集中在牌面中央区域 */
+            pointer-events: none; /* 重要：让鼠标点击穿透，不会挡住按钮 */
+        }
+
+        .hearts-pattern span {
+            color: #d32f2f;
+            font-size: clamp(2.4rem, 8vmin, 5.5rem);
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.08);
+            line-height: 1;
+            user-select: none;
+        }
+
+        /* ----- 左上角和右下角的数字标记（增强扑克牌真实感） ----- */
+        .corner {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            line-height: 1;
+            font-weight: 900;
+            color: #d32f2f;
+            pointer-events: none;
+            user-select: none;
+        }
+        .corner .number {
+            font-size: clamp(1.6rem, 4vmin, 3.2rem);
+        }
+        .corner .suit {
+            font-size: clamp(1.2rem, 3vmin, 2.4rem);
+            margin-top: -6px;
+        }
+
+        .corner-tl {
+            top: 18px;
+            left: 22px;
+        }
+        .corner-br {
+            bottom: 18px;
+            right: 22px;
+            transform: rotate(180deg); /* 右下角倒置 */
+        }
+
+        /* ----- 中间的内容面板（文字 + 按钮）覆盖在扑克牌之上 ----- */
+        .content {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 32px;
+            background: rgba(255, 255, 255, 0.82);
+            backdrop-filter: blur(6px);    /* 毛玻璃效果，让背景红心若隐若现 */
+            padding: 34px 48px;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            /* 保证文字和按钮始终清晰 */
+            max-width: 85%;
+        }
+
+        .content h1 {
+            font-size: clamp(2rem, 6vmin, 4.2rem);
+            color: #1a1a1a;
+            font-weight: 900;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.06);
+            white-space: nowrap; /* 保持一行，如果屏幕太窄会自动适配字体 */
+        }
+
+        .content h1 .highlight {
+            color: #d32f2f;
+        }
+
+        /* ----- Start 按钮样式 ----- */
+        .btn-start {
+            padding: 16px 56px;
+            font-size: clamp(1.3rem, 3.2vmin, 2.2rem);
+            font-weight: bold;
+            color: white;
+            background: linear-gradient(135deg, #d32f2f, #b71c1c);
+            border: none;
+            border-radius: 60px;
+            cursor: pointer;
+            box-shadow: 0 8px 28px rgba(211, 47, 47, 0.45);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            letter-spacing: 4px;
+        }
+
+        .btn-start:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 14px 40px rgba(211, 47, 47, 0.6);
+        }
+
+        .btn-start:active {
+            transform: scale(0.94);
+        }
+
+        .btn-start:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* ----- 手机窄屏适配 ----- */
+        @media (max-width: 480px) {
+            .content {
+                padding: 22px 24px;
+                gap: 22px;
+                background: rgba(255, 255, 255, 0.9);
+            }
+            .hearts-pattern {
+                padding: 14% 16%;
+            }
+            .corner-tl {
+                top: 12px;
+                left: 14px;
+            }
+            .corner-br {
+                bottom: 12px;
+                right: 14px;
+            }
+            .content h1 {
+                white-space: normal; /* 手机极窄时允许换行 */
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+
+        <!-- 红桃8的8颗心 (使用JS动态生成，确保数量准确) -->
+        <div class="hearts-pattern" id="heartsGrid"></div>
+
+        <!-- 左上角标记：8♥ -->
+        <div class="corner corner-tl">
+            <span class="number">8</span>
+            <span class="suit">♥</span>
+        </div>
+        <!-- 右下角标记：8♥ (倒置) -->
+        <div class="corner corner-br">
+            <span class="number">8</span>
+            <span class="suit">♥</span>
+        </div>
+
+        <!-- 中间的核心内容 -->
+        <div class="content">
+            <h1>
+                <span class="highlight">Beef</span> is a gay
+            </h1>
+            <button class="btn-start" id="startBtn">Start</button>
+        </div>
+
+    </div>
+
+    <script>
+        // 1. 动态生成 8 颗红心，填满 2列×4行 的网格
+        const grid = document.getElementById('heartsGrid');
+        for (let i = 0; i < 8; i++) {
+            const heart = document.createElement('span');
+            heart.textContent = '♥';
+            // 字体大小已在CSS中统一控制，这里无需额外设置
+            grid.appendChild(heart);
+        }
+
+        // 2. Start 按钮的点击交互（预留游戏入口）
+        const startBtn = document.getElementById('startBtn');
+
+        startBtn.addEventListener('click', function() {
+            // 给用户一个视觉反馈，表示点击生效了
+            this.textContent = '🚀 加载中';
+            this.disabled = true;
+
+            // 模拟加载（1.5秒后恢复，实际使用时这里会跳转到你的游戏逻辑）
+            setTimeout(() => {
+                // 恢复按钮状态（你可以把下面这行注释掉，换成真正的游戏启动代码）
+                this.textContent = 'Start';
+                this.disabled = false;
+
+                // ★★★ 在这里接入你真正的游戏逻辑 ★★★
+                // 例如：跳转到游戏页面 window.location.href = "game.html";
+                // 或者：显示游戏画布 document.getElementById('gameCanvas').style.display = 'block';
+                alert('🎮 游戏启动入口已就绪！\n接下来把游戏逻辑写在这里即可。');
+            }, 1500);
+        });
+    </script>
+
+</body>
+</html>
