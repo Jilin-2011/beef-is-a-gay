@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>红桃8 · GAY</title>
+    <title>红桃8 · 座号测验</title>
     <style>
         * {
             margin: 0;
@@ -209,10 +209,9 @@
             display: flex;
         }
 
-        /* ===== 对话框：更宽 ===== */
         .modal-box {
-            width: 98vw;                     /* 从 95vw 增加到 98vw */
-            max-width: 1400px;               /* 从 1200px 增加到 1400px */
+            width: 98vw;
+            max-width: 1400px;
             height: 90vh;
             max-height: 95vh;
             background: rgba(255, 255, 255, 0.88);
@@ -220,7 +219,7 @@
             border-radius: 28px;
             box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
             border: 2px solid rgba(255, 255, 255, 0.5);
-            padding: 36px 40px;              /* 略微减小内边距，让内容更舒展 */
+            padding: 36px 40px;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -260,45 +259,42 @@
             text-align: center;
         }
 
+        /* 四个选项按钮：一行四个，自适应 */
         .modal-box .btn-group {
             display: flex;
             justify-content: center;
-            gap: 40px;
+            gap: 30px;
             flex-wrap: wrap;
             margin-top: 10px;
+            width: 100%;
+            max-width: 900px;
         }
 
         .modal-box .btn-group button {
-            padding: 16px 50px;
+            padding: 16px 40px;
             font-size: clamp(1.6rem, 4vmin, 2.6rem);
             font-weight: bold;
             border: none;
             border-radius: 60px;
             cursor: pointer;
             transition: transform 0.2s, box-shadow 0.2s;
-            min-width: 140px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            min-width: 120px;
+            flex: 1 1 150px;   /* 自适应宽度 */
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+            background: linear-gradient(135deg, #42a5f5, #1e88e5);
+            color: white;
         }
 
-        .modal-box .btn-yes {
-            background: linear-gradient(135deg, #43a047, #2e7d32);
-            color: white;
-        }
-        .modal-box .btn-yes:hover {
+        .modal-box .btn-group button:hover {
             transform: translateY(-4px) scale(1.03);
-            box-shadow: 0 12px 30px rgba(67, 160, 71, 0.5);
-        }
-        .modal-box .btn-no {
-            background: linear-gradient(135deg, #e53935, #b71c1c);
-            color: white;
-        }
-        .modal-box .btn-no:hover {
-            transform: translateY(-4px) scale(1.03);
-            box-shadow: 0 12px 30px rgba(229, 57, 53, 0.5);
+            box-shadow: 0 12px 30px rgba(30, 136, 229, 0.5);
         }
         .modal-box .btn-group button:active {
             transform: scale(0.94);
         }
+
+        /* 每个选项可自定义颜色，但统一用蓝色系，也可以区分 */
+        /* 为保持整洁，全部统一 */
 
         /* ===== 手机适配 ===== */
         @media (max-width: 480px) {
@@ -338,9 +334,9 @@
             }
 
             .modal-box {
-                width: 98vw;                /* 手机上也保持 98vw */
+                width: 98vw;
                 height: 92vh;
-                padding: 24px 16px;          /* 手机内边距稍减 */
+                padding: 24px 16px;
                 border-radius: 20px;
             }
             .score-display {
@@ -364,6 +360,7 @@
                 min-width: unset;
                 padding: 14px 20px;
                 font-size: 1.6rem;
+                flex: none;
             }
         }
     </style>
@@ -415,19 +412,22 @@
 
     </div>
 
-    <!-- ===== 模态框 ===== -->
+    <!-- ===== 模态框（新题目） ===== -->
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal-box">
             <div class="score-display" id="scoreDisplay">🏆 得分: 0</div>
-            <h2>Do you think Beef is a gay?</h2>
+            <h2>Beef 的座号是：</h2>
             <div class="btn-group">
-                <button class="btn-yes" id="modalYes">Yes</button>
-                <button class="btn-no" id="modalNo">No</button>
+                <button class="option-btn" data-value="8">8</button>
+                <button class="option-btn" data-value="30">30</button>
+                <button class="option-btn" data-value="33">33</button>
+                <button class="option-btn" data-value="43">43</button>
             </div>
         </div>
     </div>
 
     <script>
+        // ===== 生成水印 =====
         (function() {
             const container = document.getElementById('watermarkContainer');
             const w = window.innerWidth;
@@ -440,16 +440,22 @@
             }
         })();
 
+        // ===== 计分系统 =====
         let score = 0;
         const scoreDisplay = document.getElementById('scoreDisplay');
         function updateScore() {
-            scoreDisplay.textContent = `🏆 得分: ${score}`;
+            // 显示一位小数，但如果是整数则显示为整数（如1.0显示为1）
+            let displayScore = score;
+            if (Number.isInteger(displayScore)) {
+                scoreDisplay.textContent = `🏆 得分: ${displayScore}`;
+            } else {
+                scoreDisplay.textContent = `🏆 得分: ${displayScore.toFixed(1)}`;
+            }
         }
 
+        // ===== 模态框控制 =====
         const startBtn = document.getElementById('startBtn');
         const modalOverlay = document.getElementById('modalOverlay');
-        const modalYes = document.getElementById('modalYes');
-        const modalNo = document.getElementById('modalNo');
         const contentBox = document.getElementById('contentBox');
 
         function showModal() {
@@ -461,20 +467,41 @@
             contentBox.classList.remove('hidden');
         }
 
+        // ===== 选项点击事件 =====
+        const optionButtons = document.querySelectorAll('.option-btn');
+        optionButtons.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const value = parseInt(this.dataset.value);
+                let message = '';
+                let points = 0;
+
+                if (value === 33) {
+                    points = 1;
+                    message = '✅ 完全正确！ +1 分';
+                } else if (value === 43) {
+                    points = 0.5;
+                    message = '✅ 答对了一半！ +0.5 分';
+                } else {
+                    points = 0;
+                    message = '❌ 错误，不得分';
+                }
+
+                // 增加分数
+                score += points;
+                updateScore();
+
+                // 弹出提示
+                alert(message);
+
+                // 关闭模态框
+                hideModal();
+            });
+        });
+
+        // ===== Start 按钮 =====
         startBtn.addEventListener('click', showModal);
 
-        modalYes.addEventListener('click', function() {
-            score += 10;
-            updateScore();
-            alert('✅ 回答正确！ +10 分');
-            hideModal();
-        });
-
-        modalNo.addEventListener('click', function() {
-            alert('❌ 回答错误，不得分');
-            hideModal();
-        });
-
+        // ===== 点击背景关闭 =====
         modalOverlay.addEventListener('click', function(e) {
             if (e.target === modalOverlay) {
                 hideModal();
