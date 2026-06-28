@@ -52,11 +52,10 @@
             text-shadow: 2px 2px 6px rgba(0,0,0,0.4);
         }
 
-        /* ===== 扑克牌放大：从 580px → 650px ===== */
         .card {
             position: relative;
             z-index: 10;
-            width: min(94vw, 650px);           /* 增大到 650px */
+            width: min(94vw, 650px);
             max-height: 90vh;
             aspect-ratio: 2.5 / 3.8;
             background: #ffffff;
@@ -77,8 +76,8 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
-            gap: 1.5%;
-            padding: 0% 12%;                  /* 保持左右内边距 */
+            gap: 1.2%;                     /* 稍微缩小行间距，给大心腾空间 */
+            padding: 0% 10%;               /* 左右内边距略减，让心更舒展 */
             pointer-events: none;
         }
 
@@ -94,10 +93,10 @@
             justify-content: center;
         }
 
-        /* 心形大小相应微调，保持视觉比例 */
+        /* ===== 红桃尺寸大幅增大 ===== */
         .heart-row span {
             color: #d32f2f;
-            font-size: clamp(3.0rem, 11vmin, 6.8rem);   /* 稍微加大 */
+            font-size: clamp(3.8rem, 15vmin, 9rem);   /* 从 6.8rem 增大到 9rem */
             line-height: 1;
             text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.08);
             user-select: none;
@@ -106,7 +105,7 @@
             transform: rotate(180deg);
         }
 
-        /* 角落数字也略微放大 */
+        /* 角落数字和红桃也稍微放大，保持协调 */
         .corner {
             position: absolute;
             display: flex;
@@ -119,10 +118,10 @@
             user-select: none;
         }
         .corner .number {
-            font-size: clamp(2.6rem, 7.5vmin, 4.8rem);   /* 加大 */
+            font-size: clamp(2.6rem, 7.5vmin, 4.8rem);
         }
         .corner .suit {
-            font-size: clamp(2.0rem, 6vmin, 4.0rem);     /* 加大 */
+            font-size: clamp(2.0rem, 6vmin, 4.0rem);
             margin-top: -6px;
         }
 
@@ -190,7 +189,7 @@
             transform: none;
         }
 
-        /* ===== 手机窄屏适配 ===== */
+        /* ===== 手机适配 ===== */
         @media (max-width: 480px) {
             .content {
                 padding: 16px 18px;
@@ -220,11 +219,11 @@
                 transform: rotate(-5deg) scale(1.1);
             }
             .hearts-container {
-                padding: 0% 8%;
-                gap: 1.2%;
+                padding: 0% 6%;           /* 手机左右内边距再缩小 */
+                gap: 1.0%;
             }
             .heart-row span {
-                font-size: clamp(2.6rem, 10vmin, 5.0rem);
+                font-size: clamp(3.0rem, 13vmin, 6.5rem); /* 手机上依然大 */
             }
             .corner .number {
                 font-size: clamp(2.0rem, 5.5vmin, 3.6rem);
