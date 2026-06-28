@@ -249,7 +249,8 @@
             backdrop-filter: blur(4px);
         }
 
-        .modal-box h2 {
+        /* ===== 题目视图 ===== */
+        .question-view h2 {
             font-size: clamp(2.0rem, 5vmin, 3.6rem);
             color: #1a1a1a;
             margin: 20px 0 30px 0;
@@ -259,18 +260,16 @@
             text-align: center;
         }
 
-        /* 四个选项按钮：一行四个，自适应 */
-        .modal-box .btn-group {
+        .option-group {
             display: flex;
             justify-content: center;
             gap: 30px;
             flex-wrap: wrap;
-            margin-top: 10px;
             width: 100%;
             max-width: 900px;
         }
 
-        .modal-box .btn-group button {
+        .option-group button {
             padding: 16px 40px;
             font-size: clamp(1.6rem, 4vmin, 2.6rem);
             font-weight: bold;
@@ -279,22 +278,70 @@
             cursor: pointer;
             transition: transform 0.2s, box-shadow 0.2s;
             min-width: 120px;
-            flex: 1 1 150px;   /* 自适应宽度 */
+            flex: 1 1 150px;
             box-shadow: 0 8px 20px rgba(0,0,0,0.12);
             background: linear-gradient(135deg, #42a5f5, #1e88e5);
             color: white;
         }
-
-        .modal-box .btn-group button:hover {
+        .option-group button:hover {
             transform: translateY(-4px) scale(1.03);
             box-shadow: 0 12px 30px rgba(30, 136, 229, 0.5);
         }
-        .modal-box .btn-group button:active {
+        .option-group button:active {
             transform: scale(0.94);
         }
 
-        /* 每个选项可自定义颜色，但统一用蓝色系，也可以区分 */
-        /* 为保持整洁，全部统一 */
+        /* ===== 结果视图（初始隐藏） ===== */
+        .result-view {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+        }
+        .result-view.active {
+            display: flex;
+        }
+
+        .result-view .result-message {
+            font-size: clamp(2.4rem, 6vmin, 4.5rem);
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 30px;
+            line-height: 1.4;
+            word-break: break-word;
+        }
+        .result-view .result-message.correct {
+            color: #2e7d32;
+        }
+        .result-view .result-message.wrong {
+            color: #c62828;
+        }
+        .result-view .result-message.partial {
+            color: #f9a825;
+        }
+
+        .btn-next {
+            padding: 18px 60px;
+            font-size: clamp(1.6rem, 4vmin, 2.6rem);
+            font-weight: bold;
+            background: linear-gradient(135deg, #43a047, #2e7d32);
+            color: white;
+            border: none;
+            border-radius: 60px;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(67, 160, 71, 0.4);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .btn-next:hover {
+            transform: translateY(-4px) scale(1.03);
+            box-shadow: 0 12px 30px rgba(67, 160, 71, 0.55);
+        }
+        .btn-next:active {
+            transform: scale(0.94);
+        }
 
         /* ===== 手机适配 ===== */
         @media (max-width: 480px) {
@@ -345,22 +392,29 @@
                 font-size: 1.2rem;
                 padding: 6px 16px;
             }
-            .modal-box h2 {
+            .question-view h2 {
                 font-size: 1.8rem;
                 margin: 10px 0 20px 0;
             }
-            .modal-box .btn-group {
+            .option-group {
                 flex-direction: column;
                 gap: 16px;
                 align-items: center;
                 width: 100%;
             }
-            .modal-box .btn-group button {
+            .option-group button {
                 width: 100%;
                 min-width: unset;
                 padding: 14px 20px;
                 font-size: 1.6rem;
                 flex: none;
+            }
+            .result-view .result-message {
+                font-size: 2.0rem;
+            }
+            .btn-next {
+                padding: 14px 40px;
+                font-size: 1.6rem;
             }
         }
     </style>
@@ -412,16 +466,27 @@
 
     </div>
 
-    <!-- ===== 模态框（新题目） ===== -->
+    <!-- ===== 全屏模态框 ===== -->
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal-box">
+            <!-- 分数 -->
             <div class="score-display" id="scoreDisplay">🏆 得分: 0</div>
-            <h2>Beef 的座号是：</h2>
-            <div class="btn-group">
-                <button class="option-btn" data-value="8">8</button>
-                <button class="option-btn" data-value="30">30</button>
-                <button class="option-btn" data-value="33">33</button>
-                <button class="option-btn" data-value="43">43</button>
+
+            <!-- 题目视图 -->
+            <div class="question-view" id="questionView">
+                <h2>Beef 的座号是：</h2>
+                <div class="option-group">
+                    <button class="option-btn" data-value="8">8</button>
+                    <button class="option-btn" data-value="30">30</button>
+                    <button class="option-btn" data-value="33">33</button>
+                    <button class="option-btn" data-value="43">43</button>
+                </div>
+            </div>
+
+            <!-- 结果视图 -->
+            <div class="result-view" id="resultView">
+                <div class="result-message" id="resultMessage">✅ 完全正确！</div>
+                <button class="btn-next" id="nextBtn">进入下一题</button>
             </div>
         </div>
     </div>
@@ -444,7 +509,6 @@
         let score = 0;
         const scoreDisplay = document.getElementById('scoreDisplay');
         function updateScore() {
-            // 显示一位小数，但如果是整数则显示为整数（如1.0显示为1）
             let displayScore = score;
             if (Number.isInteger(displayScore)) {
                 scoreDisplay.textContent = `🏆 得分: ${displayScore}`;
@@ -453,49 +517,85 @@
             }
         }
 
+        // ===== 视图切换 =====
+        const questionView = document.getElementById('questionView');
+        const resultView = document.getElementById('resultView');
+        const resultMessage = document.getElementById('resultMessage');
+
+        function showResult(message, type) {
+            questionView.style.display = 'none';
+            resultView.classList.add('active');
+            resultMessage.textContent = message;
+            // 根据类型设置颜色
+            resultMessage.className = 'result-message ' + type; // correct, wrong, partial
+        }
+
+        function resetToQuestion() {
+            resultView.classList.remove('active');
+            questionView.style.display = 'block';
+            // 隐藏模态框
+            hideModal();
+        }
+
         // ===== 模态框控制 =====
         const startBtn = document.getElementById('startBtn');
         const modalOverlay = document.getElementById('modalOverlay');
         const contentBox = document.getElementById('contentBox');
 
         function showModal() {
+            // 每次打开时重置为题目视图
+            resultView.classList.remove('active');
+            questionView.style.display = 'block';
             modalOverlay.classList.add('active');
             contentBox.classList.add('hidden');
         }
+
         function hideModal() {
             modalOverlay.classList.remove('active');
             contentBox.classList.remove('hidden');
+            // 恢复题目视图（以便下次打开）
+            resultView.classList.remove('active');
+            questionView.style.display = 'block';
         }
 
-        // ===== 选项点击事件 =====
+        // ===== 选项点击 =====
         const optionButtons = document.querySelectorAll('.option-btn');
         optionButtons.forEach(btn => {
             btn.addEventListener('click', function() {
                 const value = parseInt(this.dataset.value);
                 let message = '';
+                let type = '';
                 let points = 0;
 
                 if (value === 33) {
                     points = 1;
                     message = '✅ 完全正确！ +1 分';
+                    type = 'correct';
                 } else if (value === 43) {
                     points = 0.5;
                     message = '✅ 答对了一半！ +0.5 分';
+                    type = 'partial';
                 } else {
                     points = 0;
                     message = '❌ 错误，不得分';
+                    type = 'wrong';
                 }
 
-                // 增加分数
+                // 更新分数
                 score += points;
                 updateScore();
 
-                // 弹出提示
-                alert(message);
-
-                // 关闭模态框
-                hideModal();
+                // 显示结果视图
+                showResult(message, type);
             });
+        });
+
+        // ===== 进入下一题按钮 =====
+        document.getElementById('nextBtn').addEventListener('click', function() {
+            // 关闭模态框，回到扑克牌界面
+            hideModal();
+            // 在这里可以扩展：如果有多题，可以加载下一题
+            // 目前仅一题，直接关闭。
         });
 
         // ===== Start 按钮 =====
