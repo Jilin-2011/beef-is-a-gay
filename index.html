@@ -133,6 +133,7 @@
             transform: rotate(180deg);
         }
 
+        /* ===== 中间内容框（Beef is a gay） ===== */
         .content {
             position: relative;
             z-index: 20;
@@ -147,6 +148,11 @@
             box-shadow: 0 6px 24px rgba(0, 0, 0, 0.15);
             border: 2px solid rgba(255, 255, 255, 0.5);
             max-width: 85%;
+            transition: opacity 0.3s;
+        }
+        /* 当模态框打开时，隐藏此框 */
+        .content.hidden {
+            display: none;
         }
 
         .content h1 {
@@ -187,7 +193,7 @@
             transform: none;
         }
 
-        /* ===== 模态框 ===== */
+        /* ===== 超大模态框（几乎覆盖屏幕，毛玻璃材质） ===== */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -195,95 +201,104 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0, 0, 0, 0.6);
             z-index: 999;
             justify-content: center;
             align-items: center;
-            backdrop-filter: blur(8px);
+            backdrop-filter: blur(4px);
         }
         .modal-overlay.active {
             display: flex;
         }
 
+        /* 对话框本身：几乎全屏，毛玻璃效果，与 .content 材质一致 */
         .modal-box {
-            background: white;
-            padding: 60px 70px;
-            border-radius: 40px;
-            max-width: 92%;
-            width: 800px;               /* 特别大 */
-            max-height: 90vh;
-            overflow-y: auto;
-            box-shadow: 0 50px 100px rgba(0, 0, 0, 0.5);
-            text-align: center;
-            animation: fadeIn 0.3s ease;
+            width: 95vw;
+            height: 90vh;
+            max-width: 1200px;   /* 大屏上限，避免过宽 */
+            max-height: 95vh;
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(8px);
+            border-radius: 28px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            padding: 40px 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             position: relative;
+            animation: fadeIn 0.3s ease;
+            overflow-y: auto;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.85); }
+            from { opacity: 0; transform: scale(0.95); }
             to { opacity: 1; transform: scale(1); }
         }
 
-        /* ===== 分数显示（右上角）放大 ===== */
+        /* 分数显示（右上角） */
         .score-display {
             position: absolute;
             top: 24px;
             right: 30px;
-            font-size: clamp(2.0rem, 4.5vmin, 3.0rem);
+            font-size: clamp(1.6rem, 3.5vmin, 2.4rem);
             font-weight: 700;
             color: #2e7d32;
-            background: #e8f5e9;
-            padding: 10px 28px;
+            background: rgba(232, 245, 233, 0.9);
+            padding: 8px 24px;
             border-radius: 40px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
             letter-spacing: 1px;
+            backdrop-filter: blur(4px);
         }
 
+        /* 问题文字：适中大小，不夸张 */
         .modal-box h2 {
-            font-size: clamp(2.8rem, 7vmin, 4.5rem);
+            font-size: clamp(2.0rem, 5vmin, 3.6rem);
             color: #1a1a1a;
-            margin: 20px 0 40px 0;
+            margin: 20px 0 30px 0;
             font-weight: 700;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
             line-height: 1.4;
+            text-align: center;
         }
 
         .modal-box .btn-group {
             display: flex;
             justify-content: center;
             gap: 40px;
-            margin-top: 10px;
             flex-wrap: wrap;
+            margin-top: 10px;
         }
 
         .modal-box .btn-group button {
-            padding: 20px 60px;
-            font-size: clamp(2.0rem, 5vmin, 3.2rem);
+            padding: 16px 50px;
+            font-size: clamp(1.6rem, 4vmin, 2.6rem);
             font-weight: bold;
             border: none;
             border-radius: 60px;
             cursor: pointer;
             transition: transform 0.2s, box-shadow 0.2s;
-            min-width: 180px;
+            min-width: 140px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
         }
 
         .modal-box .btn-yes {
             background: linear-gradient(135deg, #43a047, #2e7d32);
             color: white;
-            box-shadow: 0 12px 30px rgba(67, 160, 71, 0.5);
         }
         .modal-box .btn-yes:hover {
-            transform: translateY(-6px) scale(1.04);
-            box-shadow: 0 18px 45px rgba(67, 160, 71, 0.65);
+            transform: translateY(-4px) scale(1.03);
+            box-shadow: 0 12px 30px rgba(67, 160, 71, 0.5);
         }
         .modal-box .btn-no {
             background: linear-gradient(135deg, #e53935, #b71c1c);
             color: white;
-            box-shadow: 0 12px 30px rgba(229, 57, 53, 0.5);
         }
         .modal-box .btn-no:hover {
-            transform: translateY(-6px) scale(1.04);
-            box-shadow: 0 18px 45px rgba(229, 57, 53, 0.65);
+            transform: translateY(-4px) scale(1.03);
+            box-shadow: 0 12px 30px rgba(229, 57, 53, 0.5);
         }
         .modal-box .btn-group button:active {
             transform: scale(0.94);
@@ -294,15 +309,6 @@
             .content {
                 padding: 16px 18px;
                 gap: 16px;
-                background: rgba(255, 255, 255, 0.92);
-            }
-            .corner-tl {
-                top: 8px;
-                left: 10px;
-            }
-            .corner-br {
-                bottom: 8px;
-                right: 10px;
             }
             .content h1 {
                 white-space: normal;
@@ -336,31 +342,32 @@
             }
 
             .modal-box {
-                padding: 40px 24px;
-                width: 95%;
-                border-radius: 28px;
+                width: 97vw;
+                height: 92vh;
+                padding: 30px 20px;
+                border-radius: 20px;
             }
             .score-display {
                 top: 16px;
                 right: 16px;
-                font-size: clamp(1.4rem, 3.5vmin, 2.0rem);
+                font-size: 1.2rem;
                 padding: 6px 16px;
             }
             .modal-box h2 {
-                font-size: clamp(2.0rem, 6vmin, 3.0rem);
-                margin: 16px 0 24px 0;
+                font-size: 1.8rem;
+                margin: 10px 0 20px 0;
             }
             .modal-box .btn-group {
                 flex-direction: column;
-                gap: 18px;
+                gap: 16px;
                 align-items: center;
                 width: 100%;
             }
             .modal-box .btn-group button {
                 width: 100%;
                 min-width: unset;
-                padding: 16px 20px;
-                font-size: clamp(1.6rem, 4vmin, 2.4rem);
+                padding: 14px 20px;
+                font-size: 1.6rem;
             }
         }
     </style>
@@ -403,7 +410,8 @@
             <span class="suit">♥</span>
         </div>
 
-        <div class="content">
+        <!-- 此框会在模态框打开时隐藏 -->
+        <div class="content" id="contentBox">
             <h1>
                 <span class="highlight">Beef</span> is a gay
             </h1>
@@ -447,12 +455,15 @@
         const modalOverlay = document.getElementById('modalOverlay');
         const modalYes = document.getElementById('modalYes');
         const modalNo = document.getElementById('modalNo');
+        const contentBox = document.getElementById('contentBox');
 
         function showModal() {
             modalOverlay.classList.add('active');
+            contentBox.classList.add('hidden');   // 隐藏 "Beef is a gay" 框
         }
         function hideModal() {
             modalOverlay.classList.remove('active');
+            contentBox.classList.remove('hidden'); // 恢复显示
         }
 
         startBtn.addEventListener('click', showModal);
