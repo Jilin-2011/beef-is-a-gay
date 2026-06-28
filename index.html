@@ -264,24 +264,25 @@
             display: flex;
             justify-content: center;
             gap: 30px;
-            flex-wrap: wrap;
+            flex-wrap: nowrap;
             width: 100%;
             max-width: 900px;
         }
 
         .option-group button {
-            padding: 16px 40px;
+            padding: 16px 0;
             font-size: clamp(1.6rem, 4vmin, 2.6rem);
             font-weight: bold;
             border: none;
             border-radius: 60px;
             cursor: pointer;
             transition: transform 0.2s, box-shadow 0.2s;
-            min-width: 120px;
-            flex: 1 1 150px;
+            min-width: 0;
+            flex: 1;
             box-shadow: 0 8px 20px rgba(0,0,0,0.12);
             background: linear-gradient(135deg, #42a5f5, #1e88e5);
             color: white;
+            text-align: center;
         }
         .option-group button:hover {
             transform: translateY(-4px) scale(1.03);
@@ -291,7 +292,7 @@
             transform: scale(0.94);
         }
 
-        /* ===== 结果视图（初始隐藏） ===== */
+        /* ===== 结果视图 ===== */
         .result-view {
             display: none;
             flex-direction: column;
@@ -318,9 +319,6 @@
         }
         .result-view .result-message.wrong {
             color: #c62828;
-        }
-        .result-view .result-message.partial {
-            color: #f9a825;
         }
 
         .btn-next {
@@ -397,17 +395,16 @@
                 margin: 10px 0 20px 0;
             }
             .option-group {
-                flex-direction: column;
+                flex-wrap: wrap;
                 gap: 16px;
+                flex-direction: column;
                 align-items: center;
-                width: 100%;
             }
             .option-group button {
                 width: 100%;
-                min-width: unset;
+                flex: none;
                 padding: 14px 20px;
                 font-size: 1.6rem;
-                flex: none;
             }
             .result-view .result-message {
                 font-size: 2.0rem;
@@ -469,7 +466,6 @@
     <!-- ===== 全屏模态框 ===== -->
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal-box">
-            <!-- 分数 -->
             <div class="score-display" id="scoreDisplay">🏆 得分: 0</div>
 
             <!-- 题目视图 -->
@@ -485,7 +481,7 @@
 
             <!-- 结果视图 -->
             <div class="result-view" id="resultView">
-                <div class="result-message" id="resultMessage">✅ 完全正确！</div>
+                <div class="result-message" id="resultMessage">回答正确</div>
                 <button class="btn-next" id="nextBtn">进入下一题</button>
             </div>
         </div>
@@ -505,7 +501,7 @@
             }
         })();
 
-        // ===== 计分系统 =====
+        // ===== 计分 =====
         let score = 0;
         const scoreDisplay = document.getElementById('scoreDisplay');
         function updateScore() {
@@ -526,14 +522,12 @@
             questionView.style.display = 'none';
             resultView.classList.add('active');
             resultMessage.textContent = message;
-            // 根据类型设置颜色
-            resultMessage.className = 'result-message ' + type; // correct, wrong, partial
+            resultMessage.className = 'result-message ' + type;
         }
 
         function resetToQuestion() {
             resultView.classList.remove('active');
             questionView.style.display = 'block';
-            // 隐藏模态框
             hideModal();
         }
 
@@ -543,7 +537,6 @@
         const contentBox = document.getElementById('contentBox');
 
         function showModal() {
-            // 每次打开时重置为题目视图
             resultView.classList.remove('active');
             questionView.style.display = 'block';
             modalOverlay.classList.add('active');
@@ -553,52 +546,43 @@
         function hideModal() {
             modalOverlay.classList.remove('active');
             contentBox.classList.remove('hidden');
-            // 恢复题目视图（以便下次打开）
             resultView.classList.remove('active');
             questionView.style.display = 'block';
         }
 
-        // ===== 选项点击 =====
+        // ===== 选项点击（修改后的提示文字） =====
         const optionButtons = document.querySelectorAll('.option-btn');
         optionButtons.forEach(btn => {
             btn.addEventListener('click', function() {
                 const value = parseInt(this.dataset.value);
-                let message = '';
-                let type = '';
-                let points = 0;
+                let message = '', type = '', points = 0;
 
                 if (value === 33) {
                     points = 1;
-                    message = '✅ 完全正确！ +1 分';
+                    message = '回答正确';
                     type = 'correct';
                 } else if (value === 43) {
-                    points = 0.5;
-                    message = '✅ 答对了一半！ +0.5 分';
-                    type = 'partial';
+                    points = 0.5;              // 偷偷加分
+                    message = '回答错误';
+                    type = 'wrong';
                 } else {
                     points = 0;
-                    message = '❌ 错误，不得分';
+                    message = '回答错误';
                     type = 'wrong';
                 }
 
-                // 更新分数
                 score += points;
                 updateScore();
-
-                // 显示结果视图
                 showResult(message, type);
             });
         });
 
-        // ===== 进入下一题按钮 =====
+        // ===== 下一题 =====
         document.getElementById('nextBtn').addEventListener('click', function() {
-            // 关闭模态框，回到扑克牌界面
-            hideModal();
-            // 在这里可以扩展：如果有多题，可以加载下一题
-            // 目前仅一题，直接关闭。
+            resetToQuestion();
         });
 
-        // ===== Start 按钮 =====
+        // ===== Start =====
         startBtn.addEventListener('click', showModal);
 
         // ===== 点击背景关闭 =====
