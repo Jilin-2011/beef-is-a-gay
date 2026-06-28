@@ -23,6 +23,7 @@
             overflow: hidden;
         }
 
+        /* ===== 水印 ===== */
         .watermark {
             position: fixed;
             top: 0;
@@ -39,7 +40,7 @@
             pointer-events: none;
             opacity: 0.18;
             color: #d4af37;
-            font-size: clamp(1.8rem, 6vmin, 5rem);
+            font-size: clamp(2.0rem, 7vmin, 5.5rem);
             font-weight: 900;
             letter-spacing: 8px;
             text-transform: uppercase;
@@ -52,6 +53,7 @@
             text-shadow: 2px 2px 6px rgba(0,0,0,0.4);
         }
 
+        /* ===== 扑克牌 ===== */
         .card {
             position: relative;
             z-index: 10;
@@ -67,6 +69,7 @@
             overflow: visible;
         }
 
+        /* ===== 红桃8 心形容器 ===== */
         .hearts-container {
             position: absolute;
             top: 0;
@@ -95,7 +98,7 @@
 
         .heart-row span {
             color: #d32f2f;
-            font-size: clamp(2.8rem, 10vmin, 6rem);
+            font-size: clamp(3.2rem, 12vmin, 7rem);   /* 心形稍微放大，保持视觉平衡 */
             line-height: 1;
             text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.08);
             user-select: none;
@@ -104,7 +107,7 @@
             transform: rotate(180deg);
         }
 
-        /* ===== 角落数字略微放大 ===== */
+        /* ===== 角落数字明显增大 ===== */
         .corner {
             position: absolute;
             display: flex;
@@ -117,10 +120,10 @@
             user-select: none;
         }
         .corner .number {
-            font-size: clamp(2.0rem, 5.5vmin, 3.8rem);   /* 略微放大 */
+            font-size: clamp(2.6rem, 7vmin, 4.8rem);   /* 增大 */
         }
         .corner .suit {
-            font-size: clamp(1.6rem, 4.5vmin, 3.0rem);    /* 略微放大 */
+            font-size: clamp(2.0rem, 5.5vmin, 3.8rem); /* 增大 */
             margin-top: -6px;
         }
 
@@ -134,17 +137,17 @@
             transform: rotate(180deg);
         }
 
-        /* ===== 中间内容字体略微放大 ===== */
+        /* ===== 中间内容文字明显增大 ===== */
         .content {
             position: relative;
             z-index: 20;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 20px;
+            gap: 24px;
             background: rgba(255, 255, 255, 0.88);
             backdrop-filter: blur(6px);
-            padding: 20px 28px;
+            padding: 22px 30px;
             border-radius: 16px;
             box-shadow: 0 6px 24px rgba(0, 0, 0, 0.15);
             border: 2px solid rgba(255, 255, 255, 0.5);
@@ -152,7 +155,7 @@
         }
 
         .content h1 {
-            font-size: clamp(1.8rem, 5.5vmin, 3.6rem);    /* 略微放大 */
+            font-size: clamp(2.4rem, 7vmin, 4.6rem);    /* 明显增大 */
             color: #1a1a1a;
             font-weight: 900;
             letter-spacing: 1px;
@@ -164,8 +167,8 @@
         }
 
         .btn-start {
-            padding: 12px 40px;
-            font-size: clamp(1.1rem, 3.0vmin, 1.8rem);    /* 略微放大 */
+            padding: 14px 48px;
+            font-size: clamp(1.6rem, 4vmin, 2.4rem);    /* 明显增大 */
             font-weight: bold;
             color: white;
             background: linear-gradient(135deg, #d32f2f, #b71c1c);
@@ -192,8 +195,8 @@
         /* ===== 手机适配 ===== */
         @media (max-width: 480px) {
             .content {
-                padding: 16px 18px;
-                gap: 16px;
+                padding: 18px 20px;
+                gap: 18px;
                 background: rgba(255, 255, 255, 0.92);
             }
             .corner-tl {
@@ -207,10 +210,15 @@
             .content h1 {
                 white-space: normal;
                 text-align: center;
+                font-size: clamp(2.0rem, 6vmin, 3.6rem);
+            }
+            .btn-start {
+                font-size: clamp(1.4rem, 3.5vmin, 2.0rem);
+                padding: 12px 32px;
             }
             .watermark {
                 gap: 12px 20px;
-                font-size: clamp(1.2rem, 4.5vmin, 2.8rem);
+                font-size: clamp(1.6rem, 5vmin, 3.2rem);
                 transform: rotate(-5deg) scale(1.1);
             }
             .hearts-container {
@@ -218,13 +226,13 @@
                 gap: 1.2%;
             }
             .heart-row span {
-                font-size: clamp(2.2rem, 9vmin, 4.5rem);
+                font-size: clamp(2.8rem, 10vmin, 5.5rem);
             }
             .corner .number {
-                font-size: clamp(1.6rem, 4.5vmin, 2.8rem);
+                font-size: clamp(2.2rem, 5.5vmin, 3.6rem);
             }
             .corner .suit {
-                font-size: clamp(1.2rem, 3.5vmin, 2.4rem);
+                font-size: clamp(1.8rem, 4.5vmin, 3.0rem);
             }
         }
     </style>
