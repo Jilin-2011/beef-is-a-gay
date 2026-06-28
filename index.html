@@ -23,6 +23,7 @@
             overflow: hidden;
         }
 
+        /* ===== 水印 ===== */
         .watermark {
             position: fixed;
             top: 0;
@@ -52,6 +53,7 @@
             text-shadow: 2px 2px 6px rgba(0,0,0,0.4);
         }
 
+        /* ===== 扑克牌 ===== */
         .card {
             position: relative;
             z-index: 10;
@@ -67,6 +69,7 @@
             overflow: visible;
         }
 
+        /* ===== 红桃8 ===== */
         .hearts-container {
             position: absolute;
             top: 0;
@@ -76,8 +79,8 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
-            gap: 1.2%;                     /* 稍微缩小行间距，给大心腾空间 */
-            padding: 0% 10%;               /* 左右内边距略减，让心更舒展 */
+            gap: 1.2%;
+            padding: 0% 10%;
             pointer-events: none;
         }
 
@@ -93,10 +96,9 @@
             justify-content: center;
         }
 
-        /* ===== 红桃尺寸大幅增大 ===== */
         .heart-row span {
             color: #d32f2f;
-            font-size: clamp(3.8rem, 15vmin, 9rem);   /* 从 6.8rem 增大到 9rem */
+            font-size: clamp(3.8rem, 15vmin, 9rem);
             line-height: 1;
             text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.08);
             user-select: none;
@@ -105,7 +107,6 @@
             transform: rotate(180deg);
         }
 
-        /* 角落数字和红桃也稍微放大，保持协调 */
         .corner {
             position: absolute;
             display: flex;
@@ -135,6 +136,7 @@
             transform: rotate(180deg);
         }
 
+        /* ===== 中间内容 ===== */
         .content {
             position: relative;
             z-index: 20;
@@ -189,6 +191,87 @@
             transform: none;
         }
 
+        /* ===== 模态框（自定义弹窗） ===== */
+        .modal-overlay {
+            display: none; /* 默认隐藏 */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 999;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(4px);
+        }
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-box {
+            background: white;
+            padding: 40px 44px;
+            border-radius: 24px;
+            max-width: 90%;
+            width: 440px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .modal-box h2 {
+            font-size: clamp(1.6rem, 4vmin, 2.4rem);
+            color: #1a1a1a;
+            margin-bottom: 28px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .modal-box .btn-group {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+        }
+
+        .modal-box .btn-group button {
+            padding: 12px 36px;
+            font-size: clamp(1.2rem, 3vmin, 1.8rem);
+            font-weight: bold;
+            border: none;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            min-width: 100px;
+        }
+
+        .modal-box .btn-yes {
+            background: linear-gradient(135deg, #43a047, #2e7d32);
+            color: white;
+            box-shadow: 0 6px 20px rgba(67, 160, 71, 0.4);
+        }
+        .modal-box .btn-yes:hover {
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 10px 30px rgba(67, 160, 71, 0.55);
+        }
+        .modal-box .btn-no {
+            background: linear-gradient(135deg, #e53935, #b71c1c);
+            color: white;
+            box-shadow: 0 6px 20px rgba(229, 57, 53, 0.4);
+        }
+        .modal-box .btn-no:hover {
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 10px 30px rgba(229, 57, 53, 0.55);
+        }
+        .modal-box .btn-group button:active {
+            transform: scale(0.94);
+        }
+
         /* ===== 手机适配 ===== */
         @media (max-width: 480px) {
             .content {
@@ -219,11 +302,11 @@
                 transform: rotate(-5deg) scale(1.1);
             }
             .hearts-container {
-                padding: 0% 6%;           /* 手机左右内边距再缩小 */
+                padding: 0% 6%;
                 gap: 1.0%;
             }
             .heart-row span {
-                font-size: clamp(3.0rem, 13vmin, 6.5rem); /* 手机上依然大 */
+                font-size: clamp(3.0rem, 13vmin, 6.5rem);
             }
             .corner .number {
                 font-size: clamp(2.0rem, 5.5vmin, 3.6rem);
@@ -234,13 +317,29 @@
             .heart-row.two {
                 gap: 15%;
             }
+
+            .modal-box {
+                padding: 30px 24px;
+                width: 90%;
+            }
+            .modal-box .btn-group {
+                flex-direction: column;
+                gap: 16px;
+                align-items: center;
+            }
+            .modal-box .btn-group button {
+                width: 100%;
+                min-width: unset;
+            }
         }
     </style>
 </head>
 <body>
 
+    <!-- ===== 水印 ===== -->
     <div class="watermark" id="watermarkContainer"></div>
 
+    <!-- ===== 扑克牌 ===== -->
     <div class="card">
 
         <div class="hearts-container">
@@ -282,7 +381,19 @@
 
     </div>
 
+    <!-- ===== 模态框（弹窗） ===== -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-box">
+            <h2>Do you think Beef is a gay?</h2>
+            <div class="btn-group">
+                <button class="btn-yes" id="modalYes">Yes</button>
+                <button class="btn-no" id="modalNo">No</button>
+            </div>
+        </div>
+    </div>
+
     <script>
+        // ===== 生成水印 =====
         (function() {
             const container = document.getElementById('watermarkContainer');
             const w = window.innerWidth;
@@ -295,16 +406,50 @@
             }
         })();
 
+        // ===== 获取元素 =====
         const startBtn = document.getElementById('startBtn');
+        const modalOverlay = document.getElementById('modalOverlay');
+        const modalYes = document.getElementById('modalYes');
+        const modalNo = document.getElementById('modalNo');
+
+        // ===== 显示模态框 =====
+        function showModal() {
+            modalOverlay.classList.add('active');
+        }
+
+        // ===== 隐藏模态框 =====
+        function hideModal() {
+            modalOverlay.classList.remove('active');
+        }
+
+        // ===== Start 按钮点击事件 =====
         startBtn.addEventListener('click', function() {
-            this.textContent = '🚀 加载中';
-            this.disabled = true;
-            setTimeout(() => {
-                this.textContent = 'Start';
-                this.disabled = false;
-                alert('🎮 游戏启动入口已就绪！\n接下来把游戏逻辑写在这里即可。');
-            }, 1500);
+            // 可以添加一点按钮反馈（可选）
+            // 直接显示模态框
+            showModal();
+        });
+
+        // ===== Yes 按钮 =====
+        modalYes.addEventListener('click', function() {
+            hideModal();
+            // 你可以在这里添加 Yes 的逻辑，比如跳转或记录
+            alert('你选择了 Yes 🏳️‍🌈');
+            // 也可以把按钮改个状态，例如 startBtn.textContent = '已投票 Yes';
+        });
+
+        // ===== No 按钮 =====
+        modalNo.addEventListener('click', function() {
+            hideModal();
+            alert('你选择了 No ❌');
+        });
+
+        // ===== 点击模态框外部关闭（可选） =====
+        modalOverlay.addEventListener('click', function(e) {
+            if (e.target === modalOverlay) {
+                hideModal();
+            }
         });
     </script>
+
 </body>
 </html>
