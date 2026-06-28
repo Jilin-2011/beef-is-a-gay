@@ -133,7 +133,6 @@
             transform: rotate(180deg);
         }
 
-        /* ===== 中间内容框（Beef is a gay） ===== */
         .content {
             position: relative;
             z-index: 20;
@@ -150,7 +149,6 @@
             max-width: 85%;
             transition: opacity 0.3s;
         }
-        /* 当模态框打开时，隐藏此框 */
         .content.hidden {
             display: none;
         }
@@ -193,7 +191,7 @@
             transform: none;
         }
 
-        /* ===== 超大模态框（几乎覆盖屏幕，毛玻璃材质） ===== */
+        /* ===== 模态框 ===== */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -211,18 +209,18 @@
             display: flex;
         }
 
-        /* 对话框本身：几乎全屏，毛玻璃效果，与 .content 材质一致 */
+        /* ===== 对话框：更宽 ===== */
         .modal-box {
-            width: 95vw;
+            width: 98vw;                     /* 从 95vw 增加到 98vw */
+            max-width: 1400px;               /* 从 1200px 增加到 1400px */
             height: 90vh;
-            max-width: 1200px;   /* 大屏上限，避免过宽 */
             max-height: 95vh;
             background: rgba(255, 255, 255, 0.88);
             backdrop-filter: blur(8px);
             border-radius: 28px;
             box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
             border: 2px solid rgba(255, 255, 255, 0.5);
-            padding: 40px 50px;
+            padding: 36px 40px;              /* 略微减小内边距，让内容更舒展 */
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -237,7 +235,6 @@
             to { opacity: 1; transform: scale(1); }
         }
 
-        /* 分数显示（右上角） */
         .score-display {
             position: absolute;
             top: 24px;
@@ -253,7 +250,6 @@
             backdrop-filter: blur(4px);
         }
 
-        /* 问题文字：适中大小，不夸张 */
         .modal-box h2 {
             font-size: clamp(2.0rem, 5vmin, 3.6rem);
             color: #1a1a1a;
@@ -342,9 +338,9 @@
             }
 
             .modal-box {
-                width: 97vw;
+                width: 98vw;                /* 手机上也保持 98vw */
                 height: 92vh;
-                padding: 30px 20px;
+                padding: 24px 16px;          /* 手机内边距稍减 */
                 border-radius: 20px;
             }
             .score-display {
@@ -410,7 +406,6 @@
             <span class="suit">♥</span>
         </div>
 
-        <!-- 此框会在模态框打开时隐藏 -->
         <div class="content" id="contentBox">
             <h1>
                 <span class="highlight">Beef</span> is a gay
@@ -420,7 +415,7 @@
 
     </div>
 
-    <!-- ===== 超大模态框 ===== -->
+    <!-- ===== 模态框 ===== -->
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal-box">
             <div class="score-display" id="scoreDisplay">🏆 得分: 0</div>
@@ -459,11 +454,11 @@
 
         function showModal() {
             modalOverlay.classList.add('active');
-            contentBox.classList.add('hidden');   // 隐藏 "Beef is a gay" 框
+            contentBox.classList.add('hidden');
         }
         function hideModal() {
             modalOverlay.classList.remove('active');
-            contentBox.classList.remove('hidden'); // 恢复显示
+            contentBox.classList.remove('hidden');
         }
 
         startBtn.addEventListener('click', showModal);
