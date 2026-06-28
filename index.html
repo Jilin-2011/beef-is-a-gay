@@ -53,12 +53,12 @@
             text-shadow: 2px 2px 6px rgba(0,0,0,0.4);
         }
 
-        /* ===== 扑克牌（缩小） ===== */
+        /* ===== 扑克牌 ===== */
         .card {
             position: relative;
             z-index: 10;
-            width: min(90vw, 480px);        /* 最大宽度480px，适合小屏 */
-            max-height: 90vh;               /* 防止纵向溢出 */
+            width: min(90vw, 480px);
+            max-height: 90vh;
             aspect-ratio: 2.5 / 3.8;
             background: #ffffff;
             border-radius: 20px;
@@ -69,7 +69,7 @@
             overflow: visible;
         }
 
-        /* ===== 红桃8 心形容器 ===== */
+        /* ===== 红桃8 心形容器：行间距极小 ===== */
         .hearts-container {
             position: absolute;
             top: 0;
@@ -78,8 +78,9 @@
             height: 100%;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            padding: 0% 12%;                 /* 左右内边距缩小 */
+            justify-content: center;        /* 垂直居中 */
+            gap: 1.5%;                     /* 行间距仅为容器高度的 1.5%，非常小 */
+            padding: 0% 12%;               /* 左右留边，上下无内边距 */
             pointer-events: none;
         }
 
@@ -89,7 +90,7 @@
             width: 100%;
         }
         .heart-row.two {
-            gap: 16%;                       /* 两心之间间隙 */
+            gap: 16%;                       /* 两心之间间距 */
         }
         .heart-row.center {
             justify-content: center;
@@ -97,7 +98,7 @@
 
         .heart-row span {
             color: #d32f2f;
-            font-size: clamp(2.8rem, 10vmin, 6rem);  /* 心形缩小 */
+            font-size: clamp(2.8rem, 10vmin, 6rem);
             line-height: 1;
             text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.08);
             user-select: none;
@@ -108,7 +109,7 @@
             transform: rotate(180deg);
         }
 
-        /* ===== 角落“8♥”缩小 ===== */
+        /* ===== 角落“8♥” ===== */
         .corner {
             position: absolute;
             display: flex;
@@ -219,6 +220,7 @@
             }
             .hearts-container {
                 padding: 0% 8%;
+                gap: 1.2%;                  /* 手机上稍微再小一点 */
             }
             .heart-row span {
                 font-size: clamp(2.2rem, 9vmin, 4.5rem);
@@ -241,25 +243,25 @@
     <div class="card">
 
         <div class="hearts-container">
-            <!-- 第一行：2颗 -->
+            <!-- 第一行 -->
             <div class="heart-row two">
                 <span>♥</span>
                 <span>♥</span>
             </div>
-            <!-- 第二行：1颗 -->
+            <!-- 第二行 -->
             <div class="heart-row center">
                 <span>♥</span>
             </div>
-            <!-- 第三行：2颗 -->
+            <!-- 第三行 -->
             <div class="heart-row two">
                 <span>♥</span>
                 <span>♥</span>
             </div>
-            <!-- 第四行：1颗（颠倒） -->
+            <!-- 第四行（颠倒） -->
             <div class="heart-row center flip">
                 <span>♥</span>
             </div>
-            <!-- 第五行：2颗（颠倒） -->
+            <!-- 第五行（颠倒） -->
             <div class="heart-row two flip">
                 <span>♥</span>
                 <span>♥</span>
@@ -287,7 +289,7 @@
     </div>
 
     <script>
-        // ===== 生成水印 “GAY” =====
+        // ===== 生成水印 =====
         (function() {
             const container = document.getElementById('watermarkContainer');
             const w = window.innerWidth;
