@@ -18,7 +18,7 @@
             align-items: center;
             background: #1a472a;
             font-family: 'Arial', 'Helvetica', sans-serif;
-            padding: 20px;
+            padding: 16px;
             position: relative;
             overflow: hidden;
         }
@@ -36,16 +36,16 @@
             justify-content: center;
             align-items: center;
             align-content: center;
-            gap: 30px 50px;
+            gap: 20px 40px;
             pointer-events: none;
-            opacity: 0.20;
+            opacity: 0.18;
             color: #d4af37;
-            font-size: clamp(2.5rem, 10vmin, 8rem);
+            font-size: clamp(1.8rem, 6vmin, 5rem);
             font-weight: 900;
-            letter-spacing: 10px;
+            letter-spacing: 8px;
             text-transform: uppercase;
             user-select: none;
-            transform: rotate(-10deg) scale(1.2);
+            transform: rotate(-8deg) scale(1.1);
         }
         .watermark span {
             display: inline-block;
@@ -53,23 +53,23 @@
             text-shadow: 2px 2px 6px rgba(0,0,0,0.4);
         }
 
-        /* ===== 扑克牌（加高，防止裁剪） ===== */
+        /* ===== 扑克牌（缩小） ===== */
         .card {
             position: relative;
             z-index: 10;
-            width: 100%;
-            max-width: 700px;
-            aspect-ratio: 2.5 / 3.8;        /* 增高，确保内容完整 */
+            width: min(90vw, 480px);        /* 最大宽度480px，适合小屏 */
+            max-height: 90vh;               /* 防止纵向溢出 */
+            aspect-ratio: 2.5 / 3.8;
             background: #ffffff;
-            border-radius: 28px;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7), inset 0 0 0 2px #f0f0f0;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), inset 0 0 0 2px #f0f0f0;
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: visible;               /* 防止溢出裁剪 */
+            overflow: visible;
         }
 
-        /* ===== 红桃8 心形容器，上下紧凑 ===== */
+        /* ===== 红桃8 心形容器 ===== */
         .hearts-container {
             position: absolute;
             top: 0;
@@ -78,8 +78,8 @@
             height: 100%;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;  /* 首行贴顶，末行贴底，中间均匀 */
-            padding: 0% 16%;                 /* 上下无内边距，左右保留 */
+            justify-content: space-between;
+            padding: 0% 12%;                 /* 左右内边距缩小 */
             pointer-events: none;
         }
 
@@ -89,7 +89,7 @@
             width: 100%;
         }
         .heart-row.two {
-            gap: 20%;
+            gap: 16%;                       /* 两心之间间隙 */
         }
         .heart-row.center {
             justify-content: center;
@@ -97,9 +97,9 @@
 
         .heart-row span {
             color: #d32f2f;
-            font-size: clamp(5rem, 20vmin, 14rem);
+            font-size: clamp(2.8rem, 10vmin, 6rem);  /* 心形缩小 */
             line-height: 1;
-            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1);
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.08);
             user-select: none;
         }
 
@@ -108,7 +108,7 @@
             transform: rotate(180deg);
         }
 
-        /* ===== 角落“8♥”放大且位置微调 ===== */
+        /* ===== 角落“8♥”缩小 ===== */
         .corner {
             position: absolute;
             display: flex;
@@ -121,20 +121,20 @@
             user-select: none;
         }
         .corner .number {
-            font-size: clamp(3.2rem, 10vmin, 7rem);
+            font-size: clamp(1.8rem, 5vmin, 3.5rem);
         }
         .corner .suit {
-            font-size: clamp(2.4rem, 7vmin, 5rem);
-            margin-top: -8px;
+            font-size: clamp(1.4rem, 4vmin, 2.8rem);
+            margin-top: -6px;
         }
 
         .corner-tl {
-            top: 14px;
-            left: 18px;
+            top: 12px;
+            left: 14px;
         }
         .corner-br {
-            bottom: 14px;
-            right: 18px;
+            bottom: 12px;
+            right: 14px;
             transform: rotate(180deg);
         }
 
@@ -145,22 +145,22 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 30px;
+            gap: 20px;
             background: rgba(255, 255, 255, 0.88);
-            backdrop-filter: blur(8px);
-            padding: 32px 44px;
-            border-radius: 20px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+            backdrop-filter: blur(6px);
+            padding: 20px 28px;
+            border-radius: 16px;
+            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.15);
             border: 2px solid rgba(255, 255, 255, 0.5);
             max-width: 85%;
         }
 
         .content h1 {
-            font-size: clamp(2.2rem, 6.5vmin, 4.6rem);
+            font-size: clamp(1.6rem, 5vmin, 3.2rem);
             color: #1a1a1a;
             font-weight: 900;
-            letter-spacing: 2px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.06);
+            letter-spacing: 1px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.06);
             white-space: nowrap;
         }
         .content h1 .highlight {
@@ -168,21 +168,21 @@
         }
 
         .btn-start {
-            padding: 16px 60px;
-            font-size: clamp(1.4rem, 3.5vmin, 2.4rem);
+            padding: 12px 40px;
+            font-size: clamp(1.0rem, 2.8vmin, 1.6rem);
             font-weight: bold;
             color: white;
             background: linear-gradient(135deg, #d32f2f, #b71c1c);
             border: none;
-            border-radius: 60px;
+            border-radius: 40px;
             cursor: pointer;
-            box-shadow: 0 8px 28px rgba(211, 47, 47, 0.45);
+            box-shadow: 0 6px 20px rgba(211, 47, 47, 0.4);
             transition: transform 0.2s ease, box-shadow 0.2s ease;
-            letter-spacing: 4px;
+            letter-spacing: 3px;
         }
         .btn-start:hover {
-            transform: translateY(-4px) scale(1.02);
-            box-shadow: 0 14px 40px rgba(211, 47, 47, 0.6);
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 10px 30px rgba(211, 47, 47, 0.55);
         }
         .btn-start:active {
             transform: scale(0.94);
@@ -193,41 +193,41 @@
             transform: none;
         }
 
-        /* ===== 手机适配 ===== */
+        /* ===== 手机窄屏适配 ===== */
         @media (max-width: 480px) {
             .content {
-                padding: 20px 20px;
-                gap: 20px;
+                padding: 16px 18px;
+                gap: 16px;
                 background: rgba(255, 255, 255, 0.92);
             }
             .corner-tl {
-                top: 10px;
-                left: 12px;
+                top: 8px;
+                left: 10px;
             }
             .corner-br {
-                bottom: 10px;
-                right: 12px;
+                bottom: 8px;
+                right: 10px;
             }
             .content h1 {
                 white-space: normal;
                 text-align: center;
             }
             .watermark {
-                gap: 15px 25px;
-                font-size: clamp(1.5rem, 6vmin, 3.5rem);
-                transform: rotate(-6deg) scale(1.1);
+                gap: 12px 20px;
+                font-size: clamp(1.2rem, 4.5vmin, 2.8rem);
+                transform: rotate(-5deg) scale(1.1);
             }
             .hearts-container {
-                padding: 0% 12%;
+                padding: 0% 8%;
             }
             .heart-row span {
-                font-size: clamp(3.5rem, 14vmin, 8rem);
+                font-size: clamp(2.2rem, 9vmin, 4.5rem);
             }
             .corner .number {
-                font-size: clamp(2.4rem, 8vmin, 4.5rem);
+                font-size: clamp(1.4rem, 4.5vmin, 2.6rem);
             }
             .corner .suit {
-                font-size: clamp(1.8rem, 6vmin, 3.5rem);
+                font-size: clamp(1.0rem, 3.5vmin, 2.2rem);
             }
         }
     </style>
@@ -292,7 +292,7 @@
             const container = document.getElementById('watermarkContainer');
             const w = window.innerWidth;
             const h = window.innerHeight;
-            const count = Math.ceil((w * h) / (150 * 100)) * 2;
+            const count = Math.ceil((w * h) / (120 * 80)) * 2;
             for (let i = 0; i < count; i++) {
                 const span = document.createElement('span');
                 span.textContent = 'GAY';
