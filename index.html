@@ -23,7 +23,6 @@
             overflow: hidden;
         }
 
-        /* ===== 水印 ===== */
         .watermark {
             position: fixed;
             top: 0;
@@ -53,7 +52,6 @@
             text-shadow: 2px 2px 6px rgba(0,0,0,0.4);
         }
 
-        /* ===== 扑克牌 ===== */
         .card {
             position: relative;
             z-index: 10;
@@ -189,7 +187,7 @@
             transform: none;
         }
 
-        /* ===== 模态框（放大版） ===== */
+        /* ===== 模态框 ===== */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -197,11 +195,11 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.65);
+            background: rgba(0, 0, 0, 0.7);
             z-index: 999;
             justify-content: center;
             align-items: center;
-            backdrop-filter: blur(6px);
+            backdrop-filter: blur(8px);
         }
         .modal-overlay.active {
             display: flex;
@@ -209,80 +207,83 @@
 
         .modal-box {
             background: white;
-            padding: 48px 52px;
-            border-radius: 28px;
-            max-width: 90%;
-            width: 520px;                /* 比原来宽 */
-            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.5);
+            padding: 60px 70px;
+            border-radius: 40px;
+            max-width: 92%;
+            width: 800px;               /* 特别大 */
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 50px 100px rgba(0, 0, 0, 0.5);
             text-align: center;
             animation: fadeIn 0.3s ease;
-            position: relative;          /* 让右上角分数可以绝对定位 */
+            position: relative;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.9); }
+            from { opacity: 0; transform: scale(0.85); }
             to { opacity: 1; transform: scale(1); }
         }
 
-        /* ===== 分数显示（右上角） ===== */
+        /* ===== 分数显示（右上角）放大 ===== */
         .score-display {
             position: absolute;
-            top: 16px;
-            right: 20px;
-            font-size: clamp(1.4rem, 3vmin, 1.8rem);
+            top: 24px;
+            right: 30px;
+            font-size: clamp(2.0rem, 4.5vmin, 3.0rem);
             font-weight: 700;
             color: #2e7d32;
             background: #e8f5e9;
-            padding: 6px 18px;
-            border-radius: 30px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            padding: 10px 28px;
+            border-radius: 40px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
             letter-spacing: 1px;
         }
 
         .modal-box h2 {
-            font-size: clamp(1.8rem, 5vmin, 2.8rem);
+            font-size: clamp(2.8rem, 7vmin, 4.5rem);
             color: #1a1a1a;
-            margin: 10px 0 30px 0;
+            margin: 20px 0 40px 0;
             font-weight: 700;
-            letter-spacing: 0.5px;
+            letter-spacing: 1px;
             line-height: 1.4;
         }
 
         .modal-box .btn-group {
             display: flex;
             justify-content: center;
-            gap: 30px;
+            gap: 40px;
             margin-top: 10px;
+            flex-wrap: wrap;
         }
 
         .modal-box .btn-group button {
-            padding: 14px 44px;
-            font-size: clamp(1.4rem, 3.5vmin, 2.0rem);
+            padding: 20px 60px;
+            font-size: clamp(2.0rem, 5vmin, 3.2rem);
             font-weight: bold;
             border: none;
-            border-radius: 50px;
+            border-radius: 60px;
             cursor: pointer;
             transition: transform 0.2s, box-shadow 0.2s;
-            min-width: 120px;
+            min-width: 180px;
         }
 
         .modal-box .btn-yes {
             background: linear-gradient(135deg, #43a047, #2e7d32);
             color: white;
-            box-shadow: 0 8px 24px rgba(67, 160, 71, 0.4);
+            box-shadow: 0 12px 30px rgba(67, 160, 71, 0.5);
         }
         .modal-box .btn-yes:hover {
-            transform: translateY(-4px) scale(1.03);
-            box-shadow: 0 14px 36px rgba(67, 160, 71, 0.55);
+            transform: translateY(-6px) scale(1.04);
+            box-shadow: 0 18px 45px rgba(67, 160, 71, 0.65);
         }
         .modal-box .btn-no {
             background: linear-gradient(135deg, #e53935, #b71c1c);
             color: white;
-            box-shadow: 0 8px 24px rgba(229, 57, 53, 0.4);
+            box-shadow: 0 12px 30px rgba(229, 57, 53, 0.5);
         }
         .modal-box .btn-no:hover {
-            transform: translateY(-4px) scale(1.03);
-            box-shadow: 0 14px 36px rgba(229, 57, 53, 0.55);
+            transform: translateY(-6px) scale(1.04);
+            box-shadow: 0 18px 45px rgba(229, 57, 53, 0.65);
         }
         .modal-box .btn-group button:active {
             transform: scale(0.94);
@@ -335,28 +336,31 @@
             }
 
             .modal-box {
-                padding: 32px 20px;
-                width: 92%;
+                padding: 40px 24px;
+                width: 95%;
+                border-radius: 28px;
+            }
+            .score-display {
+                top: 16px;
+                right: 16px;
+                font-size: clamp(1.4rem, 3.5vmin, 2.0rem);
+                padding: 6px 16px;
+            }
+            .modal-box h2 {
+                font-size: clamp(2.0rem, 6vmin, 3.0rem);
+                margin: 16px 0 24px 0;
             }
             .modal-box .btn-group {
                 flex-direction: column;
-                gap: 16px;
+                gap: 18px;
                 align-items: center;
+                width: 100%;
             }
             .modal-box .btn-group button {
                 width: 100%;
                 min-width: unset;
-                padding: 14px 20px;
-            }
-            .score-display {
-                top: 12px;
-                right: 14px;
-                font-size: 1.0rem;
-                padding: 4px 12px;
-            }
-            .modal-box h2 {
-                font-size: 1.6rem;
-                margin-top: 8px;
+                padding: 16px 20px;
+                font-size: clamp(1.6rem, 4vmin, 2.4rem);
             }
         }
     </style>
@@ -408,12 +412,10 @@
 
     </div>
 
-    <!-- ===== 模态框（弹窗）放大 + 分数 ===== -->
+    <!-- ===== 超大模态框 ===== -->
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal-box">
-            <!-- 分数显示（右上角） -->
             <div class="score-display" id="scoreDisplay">🏆 得分: 0</div>
-            <!-- 问题 -->
             <h2>Do you think Beef is a gay?</h2>
             <div class="btn-group">
                 <button class="btn-yes" id="modalYes">Yes</button>
@@ -423,7 +425,6 @@
     </div>
 
     <script>
-        // ===== 生成水印 =====
         (function() {
             const container = document.getElementById('watermarkContainer');
             const w = window.innerWidth;
@@ -436,21 +437,17 @@
             }
         })();
 
-        // ===== 计分系统 =====
         let score = 0;
         const scoreDisplay = document.getElementById('scoreDisplay');
-
         function updateScore() {
             scoreDisplay.textContent = `🏆 得分: ${score}`;
         }
 
-        // ===== 元素获取 =====
         const startBtn = document.getElementById('startBtn');
         const modalOverlay = document.getElementById('modalOverlay');
         const modalYes = document.getElementById('modalYes');
         const modalNo = document.getElementById('modalNo');
 
-        // ===== 显示/隐藏弹窗 =====
         function showModal() {
             modalOverlay.classList.add('active');
         }
@@ -458,27 +455,20 @@
             modalOverlay.classList.remove('active');
         }
 
-        // ===== Start 按钮 =====
-        startBtn.addEventListener('click', function() {
-            showModal();
-        });
+        startBtn.addEventListener('click', showModal);
 
-        // ===== 点击 Yes（正确） =====
         modalYes.addEventListener('click', function() {
-            // 回答正确，加10分
             score += 10;
             updateScore();
             alert('✅ 回答正确！ +10 分');
             hideModal();
         });
 
-        // ===== 点击 No（错误） =====
         modalNo.addEventListener('click', function() {
             alert('❌ 回答错误，不得分');
             hideModal();
         });
 
-        // ===== 点击背景关闭 =====
         modalOverlay.addEventListener('click', function(e) {
             if (e.target === modalOverlay) {
                 hideModal();
