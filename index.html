@@ -260,6 +260,7 @@
             text-align: center;
         }
 
+        /* ===== 选项按钮优化：加长 + 居中 ===== */
         .option-group {
             display: flex;
             justify-content: center;
@@ -270,20 +271,25 @@
         }
 
         .option-group button {
-            padding: 16px 20px;
-            min-width: 120px;
+            padding: 16px 30px;                /* 左右内边距增加，使按钮更长 */
+            min-width: 150px;                  /* 最小宽度增大，防止过短 */
             font-size: clamp(1.6rem, 4vmin, 2.6rem);
             font-weight: bold;
             border: none;
             border-radius: 60px;
             cursor: pointer;
             transition: transform 0.2s, box-shadow 0.2s;
-            flex: 1 1 0;
+            flex: 1 1 0;                       /* 均分剩余空间 */
             box-shadow: 0 8px 20px rgba(0,0,0,0.12);
             background: linear-gradient(135deg, #42a5f5, #1e88e5);
             color: white;
+            /* 使用 Flex 完全居中文字 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
             text-align: center;
             white-space: nowrap;
+            line-height: 1.2;
         }
         .option-group button:hover {
             transform: translateY(-4px) scale(1.03);
@@ -410,6 +416,9 @@
                 padding: 14px 20px;
                 font-size: 1.6rem;
                 min-width: unset;
+                display: flex;
+                justify-content: center;
+                align-items: center;
             }
             .result-view .result-message {
                 font-size: 2.0rem;
@@ -551,7 +560,6 @@
         function renderQuestion() {
             const q = questions[currentQuestionIndex];
             questionText.textContent = q.question;
-            // 清空并重新生成选项按钮
             optionGroup.innerHTML = '';
             q.options.forEach(opt => {
                 const btn = document.createElement('button');
@@ -560,7 +568,6 @@
                 btn.textContent = opt;
                 optionGroup.appendChild(btn);
             });
-            // 隐藏结果视图，显示题目视图
             resultView.classList.remove('active');
             document.getElementById('questionView').style.display = 'block';
         }
@@ -573,24 +580,20 @@
             resultMessage.className = 'result-message ' + type;
         }
 
-        // ===== 重置到题目（进入下一题） =====
+        // ===== 下一题 =====
         function goToNextQuestion() {
             currentQuestionIndex++;
             if (currentQuestionIndex < questions.length) {
                 renderQuestion();
-                // 关闭结果视图（已在 renderQuestion 中处理）
             } else {
-                // 所有题目完成，关闭模态框并显示完成信息
                 hideModal();
                 alert('🎉 所有题目已完成！你的总分是 ' + (Number.isInteger(score) ? score : score.toFixed(1)) + ' 分');
-                // 重置索引以便下次开始
                 currentQuestionIndex = 0;
             }
         }
 
         // ===== 模态框控制 =====
         function showModal() {
-            // 重置分数？ 通常重新开始应重置分数，但题目要求可能不重置，这里我们选择每次开始重置分数，如果你希望累积，可注释掉。
             score = 0;
             updateScore();
             currentQuestionIndex = 0;
@@ -602,13 +605,11 @@
         function hideModal() {
             modalOverlay.classList.remove('active');
             contentBox.classList.remove('hidden');
-            // 重置视图状态
             resultView.classList.remove('active');
             document.getElementById('questionView').style.display = 'block';
         }
 
         // ===== 事件绑定 =====
-        // 选项点击事件（委托）
         optionGroup.addEventListener('click', function(e) {
             const btn = e.target.closest('.option-btn');
             if (!btn) return;
@@ -620,22 +621,17 @@
             showResult(result.message, result.type);
         });
 
-        // 下一题按钮
         nextBtn.addEventListener('click', goToNextQuestion);
-
-        // Start 按钮
         startBtn.addEventListener('click', showModal);
 
-        // 点击背景关闭
         modalOverlay.addEventListener('click', function(e) {
             if (e.target === modalOverlay) {
                 hideModal();
-                // 如果当前还有未完成的题目，重置索引以便下次开始
                 currentQuestionIndex = 0;
             }
         });
 
-        // 初始化渲染第一题（但模态框初始隐藏，所以只是准备）
+        // 初始准备
         renderQuestion();
     </script>
 
