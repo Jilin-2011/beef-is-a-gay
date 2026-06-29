@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>红桃8 · 座号测验</title>
+    <title>红桃8 · 双重测验</title>
     <style>
         * {
             margin: 0;
@@ -260,7 +260,6 @@
             text-align: center;
         }
 
-        /* ===== 选项按钮样式修复 ===== */
         .option-group {
             display: flex;
             justify-content: center;
@@ -271,20 +270,20 @@
         }
 
         .option-group button {
-            padding: 16px 20px;              /* 左右内边距恢复，文字不拥挤 */
-            min-width: 120px;                /* 保证按钮不会缩成一个点 */
+            padding: 16px 20px;
+            min-width: 120px;
             font-size: clamp(1.6rem, 4vmin, 2.6rem);
             font-weight: bold;
             border: none;
             border-radius: 60px;
             cursor: pointer;
             transition: transform 0.2s, box-shadow 0.2s;
-            flex: 1 1 0;                     /* 允许均分，但最小宽度已限制 */
+            flex: 1 1 0;
             box-shadow: 0 8px 20px rgba(0,0,0,0.12);
             background: linear-gradient(135deg, #42a5f5, #1e88e5);
             color: white;
             text-align: center;
-            white-space: nowrap;             /* 文字不换行 */
+            white-space: nowrap;
         }
         .option-group button:hover {
             transform: translateY(-4px) scale(1.03);
@@ -321,6 +320,9 @@
         }
         .result-view .result-message.wrong {
             color: #c62828;
+        }
+        .result-view .result-message.info {
+            color: #f9a825;
         }
 
         .btn-next {
@@ -396,7 +398,6 @@
                 font-size: 1.8rem;
                 margin: 10px 0 20px 0;
             }
-            /* 手机上一行放不下，改为纵向排列 */
             .option-group {
                 flex-wrap: wrap;
                 gap: 16px;
@@ -474,12 +475,9 @@
 
             <!-- 题目视图 -->
             <div class="question-view" id="questionView">
-                <h2>Beef 的座号是：</h2>
-                <div class="option-group">
-                    <button class="option-btn" data-value="8">8</button>
-                    <button class="option-btn" data-value="30">30</button>
-                    <button class="option-btn" data-value="33">33</button>
-                    <button class="option-btn" data-value="43">43</button>
+                <h2 id="questionText">Beef 的座号是：</h2>
+                <div class="option-group" id="optionGroup">
+                    <!-- 由 JavaScript 动态生成 -->
                 </div>
             </div>
 
@@ -505,9 +503,41 @@
             }
         })();
 
-        // ===== 计分 =====
+        // ===== 题目数据 =====
+        const questions = [
+            {
+                question: "Beef 的座号是：",
+                options: ["8", "30", "33", "43"],
+                handleOption: function(value) {
+                    if (value === "33") return { message: '回答正确', type: 'correct', points: 1 };
+                    if (value === "43") return { message: '你已经上初中了', type: 'info', points: 0.5 };
+                    return { message: '回答错误', type: 'wrong', points: 0 };
+                }
+            },
+            {
+                question: "Beef 的生日是：",
+                options: ["12.04", "2.11", "5.8", "9.15"],
+                handleOption: function(value) {
+                    if (value === "2.11") return { message: '回答正确', type: 'correct', points: 2 };
+                    if (value === "12.04") return { message: '这是Josh', type: 'info', points: 0 };
+                    return { message: '5891！', type: 'wrong', points: 0 };
+                }
+            }
+        ];
+
+        // ===== 状态 =====
+        let currentQuestionIndex = 0;
         let score = 0;
         const scoreDisplay = document.getElementById('scoreDisplay');
+        const questionText = document.getElementById('questionText');
+        const optionGroup = document.getElementById('optionGroup');
+        const resultView = document.getElementById('resultView');
+        const resultMessage = document.getElementById('resultMessage');
+        const nextBtn = document.getElementById('nextBtn');
+        const modalOverlay = document.getElementById('modalOverlay');
+        const contentBox = document.getElementById('contentBox');
+        const startBtn = document.getElementById('startBtn');
+
         function updateScore() {
             let displayScore = score;
             if (Number.isInteger(displayScore)) {
@@ -517,32 +547,54 @@
             }
         }
 
-        // ===== 视图切换 =====
-        const questionView = document.getElementById('questionView');
-        const resultView = document.getElementById('resultView');
-        const resultMessage = document.getElementById('resultMessage');
+        // ===== 渲染当前题目 =====
+        function renderQuestion() {
+            const q = questions[currentQuestionIndex];
+            questionText.textContent = q.question;
+            // 清空并重新生成选项按钮
+            optionGroup.innerHTML = '';
+            q.options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.dataset.value = opt;
+                btn.textContent = opt;
+                optionGroup.appendChild(btn);
+            });
+            // 隐藏结果视图，显示题目视图
+            resultView.classList.remove('active');
+            document.getElementById('questionView').style.display = 'block';
+        }
 
+        // ===== 显示结果 =====
         function showResult(message, type) {
-            questionView.style.display = 'none';
+            document.getElementById('questionView').style.display = 'none';
             resultView.classList.add('active');
             resultMessage.textContent = message;
             resultMessage.className = 'result-message ' + type;
         }
 
-        function resetToQuestion() {
-            resultView.classList.remove('active');
-            questionView.style.display = 'block';
-            hideModal();
+        // ===== 重置到题目（进入下一题） =====
+        function goToNextQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < questions.length) {
+                renderQuestion();
+                // 关闭结果视图（已在 renderQuestion 中处理）
+            } else {
+                // 所有题目完成，关闭模态框并显示完成信息
+                hideModal();
+                alert('🎉 所有题目已完成！你的总分是 ' + (Number.isInteger(score) ? score : score.toFixed(1)) + ' 分');
+                // 重置索引以便下次开始
+                currentQuestionIndex = 0;
+            }
         }
 
         // ===== 模态框控制 =====
-        const startBtn = document.getElementById('startBtn');
-        const modalOverlay = document.getElementById('modalOverlay');
-        const contentBox = document.getElementById('contentBox');
-
         function showModal() {
-            resultView.classList.remove('active');
-            questionView.style.display = 'block';
+            // 重置分数？ 通常重新开始应重置分数，但题目要求可能不重置，这里我们选择每次开始重置分数，如果你希望累积，可注释掉。
+            score = 0;
+            updateScore();
+            currentQuestionIndex = 0;
+            renderQuestion();
             modalOverlay.classList.add('active');
             contentBox.classList.add('hidden');
         }
@@ -550,51 +602,41 @@
         function hideModal() {
             modalOverlay.classList.remove('active');
             contentBox.classList.remove('hidden');
+            // 重置视图状态
             resultView.classList.remove('active');
-            questionView.style.display = 'block';
+            document.getElementById('questionView').style.display = 'block';
         }
 
-        // ===== 选项点击 =====
-        const optionButtons = document.querySelectorAll('.option-btn');
-        optionButtons.forEach(btn => {
-            btn.addEventListener('click', function() {
-                const value = parseInt(this.dataset.value);
-                let message = '', type = '', points = 0;
-
-                if (value === 33) {
-                    points = 1;
-                    message = '回答正确';
-                    type = 'correct';
-                } else if (value === 43) {
-                    points = 0.5;
-                    message = '回答错误';
-                    type = 'wrong';
-                } else {
-                    points = 0;
-                    message = '回答错误';
-                    type = 'wrong';
-                }
-
-                score += points;
-                updateScore();
-                showResult(message, type);
-            });
+        // ===== 事件绑定 =====
+        // 选项点击事件（委托）
+        optionGroup.addEventListener('click', function(e) {
+            const btn = e.target.closest('.option-btn');
+            if (!btn) return;
+            const value = btn.dataset.value;
+            const q = questions[currentQuestionIndex];
+            const result = q.handleOption(value);
+            score += result.points;
+            updateScore();
+            showResult(result.message, result.type);
         });
 
-        // ===== 下一题 =====
-        document.getElementById('nextBtn').addEventListener('click', function() {
-            resetToQuestion();
-        });
+        // 下一题按钮
+        nextBtn.addEventListener('click', goToNextQuestion);
 
-        // ===== Start =====
+        // Start 按钮
         startBtn.addEventListener('click', showModal);
 
-        // ===== 点击背景关闭 =====
+        // 点击背景关闭
         modalOverlay.addEventListener('click', function(e) {
             if (e.target === modalOverlay) {
                 hideModal();
+                // 如果当前还有未完成的题目，重置索引以便下次开始
+                currentQuestionIndex = 0;
             }
         });
+
+        // 初始化渲染第一题（但模态框初始隐藏，所以只是准备）
+        renderQuestion();
     </script>
 
 </body>
