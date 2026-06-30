@@ -572,12 +572,24 @@
             }
         }
 
-        // ===== 渲染当前题目 =====
+        // ===== 洗牌函数（Fisher–Yates） =====
+        function shuffleArray(arr) {
+            const copy = [...arr];
+            for (let i = copy.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [copy[i], copy[j]] = [copy[j], copy[i]];
+            }
+            return copy;
+        }
+
+        // ===== 渲染当前题目（选项顺序随机） =====
         function renderQuestion() {
             const q = questions[currentQuestionIndex];
             questionText.textContent = q.question;
+            // 打乱选项顺序
+            const shuffled = shuffleArray(q.options);
             optionGroup.innerHTML = '';
-            q.options.forEach(opt => {
+            shuffled.forEach(opt => {
                 const btn = document.createElement('button');
                 btn.className = 'option-btn';
                 btn.dataset.value = opt;
