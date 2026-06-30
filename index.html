@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>红桃8 · 双重测验</title>
+    <title>红桃8 · 四重测验</title>
     <style>
         * {
             margin: 0;
@@ -260,7 +260,6 @@
             text-align: center;
         }
 
-        /* ===== 选项按钮优化：加长 + 居中 ===== */
         .option-group {
             display: flex;
             justify-content: center;
@@ -271,19 +270,18 @@
         }
 
         .option-group button {
-            padding: 16px 30px;                /* 左右内边距增加，使按钮更长 */
-            min-width: 150px;                  /* 最小宽度增大，防止过短 */
+            padding: 16px 30px;
+            min-width: 150px;
             font-size: clamp(1.6rem, 4vmin, 2.6rem);
             font-weight: bold;
             border: none;
             border-radius: 60px;
             cursor: pointer;
             transition: transform 0.2s, box-shadow 0.2s;
-            flex: 1 1 0;                       /* 均分剩余空间 */
+            flex: 1 1 0;
             box-shadow: 0 8px 20px rgba(0,0,0,0.12);
             background: linear-gradient(135deg, #42a5f5, #1e88e5);
             color: white;
-            /* 使用 Flex 完全居中文字 */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -512,7 +510,7 @@
             }
         })();
 
-        // ===== 题目数据 =====
+        // ===== 四题数据 =====
         const questions = [
             {
                 question: "Beef 的座号是：",
@@ -530,6 +528,24 @@
                     if (value === "2.11") return { message: '回答正确', type: 'correct', points: 2 };
                     if (value === "12.04") return { message: '这是Josh', type: 'info', points: 0 };
                     return { message: '5891！', type: 'wrong', points: 0 };
+                }
+            },
+            {
+                question: "下列哪个选项不是描述Beef",
+                options: ["Gay", "小方", "牛二", "Beef"],
+                handleOption: function(value) {
+                    if (value === "牛二") return { message: '回答正确', type: 'correct', points: 1 };
+                    return { message: '回答错误', type: 'wrong', points: 0 };
+                }
+            },
+            {
+                question: "谁有史以来没有与Beef做过同桌",
+                options: ["13号", "8号", "45号", "39号"],
+                handleOption: function(value) {
+                    if (value === "45号") return { message: '回答正确', type: 'correct', points: 2 };
+                    if (value === "8号") return { message: 'Gay发力了', type: 'info', points: 0 };
+                    if (value === "39号") return { message: '你忽视了小学时期', type: 'info', points: 0 };
+                    return { message: '回答错误', type: 'wrong', points: 0 };
                 }
             }
         ];
