@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>红桃8 · 四重测验</title>
+    <title>红桃8 · 六重测验</title>
     <style>
-        /* 样式保持不变（与之前完全相同） */
+        /* 样式与之前完全相同（略作精简） */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             min-height: 100vh;
@@ -333,13 +333,13 @@
             }
         })();
 
-        // ===== 四题数据（原始顺序） =====
+        // ===== 六题数据（原始顺序，包含新分数） =====
         const baseQuestions = [
             {
                 question: "Beef 的座号是：",
                 options: ["8", "30", "33", "43"],
                 handleOption: function(value) {
-                    if (value === "33") return { message: '回答正确', type: 'correct', points: 1 };
+                    if (value === "33") return { message: '回答正确', type: 'correct', points: 3 };
                     if (value === "43") return { message: '你已经上初中了', type: 'info', points: 0.5 };
                     return { message: '回答错误', type: 'wrong', points: 0 };
                 }
@@ -348,7 +348,7 @@
                 question: "Beef 的生日是：",
                 options: ["12.04", "2.11", "5.8", "9.15"],
                 handleOption: function(value) {
-                    if (value === "2.11") return { message: '回答正确', type: 'correct', points: 2 };
+                    if (value === "2.11") return { message: '回答正确', type: 'correct', points: 5 };
                     if (value === "12.04") return { message: '这是Josh', type: 'info', points: 0 };
                     return { message: '5891！', type: 'wrong', points: 0 };
                 }
@@ -357,7 +357,7 @@
                 question: "下列哪个选项不是描述Beef",
                 options: ["Gay", "小方", "牛二", "Beef"],
                 handleOption: function(value) {
-                    if (value === "牛二") return { message: '回答正确', type: 'correct', points: 1 };
+                    if (value === "牛二") return { message: '回答正确', type: 'correct', points: 3 };
                     return { message: '回答错误', type: 'wrong', points: 0 };
                 }
             },
@@ -365,16 +365,34 @@
                 question: "谁有史以来没有与Beef做过同桌",
                 options: ["13号", "8号", "45号", "39号"],
                 handleOption: function(value) {
-                    if (value === "45号") return { message: '回答正确', type: 'correct', points: 2 };
+                    if (value === "45号") return { message: '回答正确', type: 'correct', points: 7 };
                     if (value === "8号") return { message: 'Gay发力了', type: 'info', points: 0 };
                     if (value === "39号") return { message: '你忽视了小学时期', type: 'info', points: 0 };
+                    return { message: '回答错误', type: 'wrong', points: 0 };
+                }
+            },
+            {
+                question: "Beef户口所在地是",
+                options: ["河北唐山", "广东汕头", "香港", "湖南衡阳"],
+                handleOption: function(value) {
+                    if (value === "香港") return { message: '回答正确', type: 'correct', points: 5 };
+                    if (value === "湖南衡阳") return { message: '注意审题：户口所在地', type: 'info', points: 0 };
+                    return { message: '回答错误', type: 'wrong', points: 0 };
+                }
+            },
+            {
+                question: "Beef是Gay吗",
+                options: ["是", "不是"],
+                handleOption: function(value) {
+                    if (value === "是") return { message: '回答正确', type: 'correct', points: 20 };
+                    if (value === "不是") return { message: '这题很基础，答错加-20分', type: 'info', points: -20 };
                     return { message: '回答错误', type: 'wrong', points: 0 };
                 }
             }
         ];
 
         // ===== 状态 =====
-        let currentQuestions = [];          // 存储当前打乱后的题目顺序
+        let currentQuestions = [];
         let currentQuestionIndex = 0;
         let score = 0;
         const scoreDisplay = document.getElementById('scoreDisplay');
@@ -396,7 +414,7 @@
             }
         }
 
-        // ===== 洗牌函数（Fisher–Yates） =====
+        // ===== 洗牌函数 =====
         function shuffleArray(arr) {
             const copy = [...arr];
             for (let i = copy.length - 1; i > 0; i--) {
@@ -406,11 +424,10 @@
             return copy;
         }
 
-        // ===== 渲染当前题目（选项顺序也随机） =====
+        // ===== 渲染当前题目 =====
         function renderQuestion() {
             const q = currentQuestions[currentQuestionIndex];
             questionText.textContent = q.question;
-            // 打乱选项顺序
             const shuffledOptions = shuffleArray(q.options);
             console.log('打乱后的选项顺序:', shuffledOptions);
             optionGroup.innerHTML = '';
@@ -439,20 +456,16 @@
             if (currentQuestionIndex < currentQuestions.length) {
                 renderQuestion();
             } else {
-                // 所有题目完成
                 hideModal();
                 alert('🎉 所有题目已完成！你的总分是 ' + (Number.isInteger(score) ? score : score.toFixed(1)) + ' 分');
-                // 重置索引，以便下次开始
                 currentQuestionIndex = 0;
             }
         }
 
         // ===== 模态框控制 =====
         function showModal() {
-            // 重置分数
             score = 0;
             updateScore();
-            // 打乱题目顺序
             currentQuestions = shuffleArray([...baseQuestions]);
             console.log('打乱后的题目顺序:', currentQuestions.map(q => q.question));
             currentQuestionIndex = 0;
@@ -490,8 +503,7 @@
             }
         });
 
-        // 初始准备（但此时未打乱，只是预渲染，不影响）
-        // 因为 modal 默认隐藏，所以渲染什么都可以，但最好给个默认值
+        // 初始准备
         currentQuestions = [...baseQuestions];
         renderQuestion();
     </script>
